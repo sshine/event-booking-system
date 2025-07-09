@@ -21,6 +21,3 @@ database.sqlite
 .idea/
 *.swp
 *~
-
-# Claude Code
-.claude/
