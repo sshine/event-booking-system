@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+.env.*
+
+# Build outputs
+dist/
+build/
+
+# Database
+*.sqlite
+*.sqlite3
+database.sqlite
+
+# Logs
+*.log
+
+# IDE/Editor files
+.idea/
+*.swp
+*~
+
+# Claude Code
+.claude/
