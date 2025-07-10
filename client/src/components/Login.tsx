@@ -43,7 +43,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSwitchToRegister
     <div className="auth-container">
       <div className="auth-form">
         <h2>Login</h2>
-        
+
         {error && (
           <div className="error-message">
             {error}
@@ -77,8 +77,8 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSwitchToRegister
             />
           </div>
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="btn btn-primary btn-full"
             disabled={loading}
           >
@@ -88,8 +88,8 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSwitchToRegister
 
         <div className="auth-switch">
           <p>Don't have an account?</p>
-          <button 
-            type="button" 
+          <button
+            type="button"
             className="btn btn-link"
             onClick={onSwitchToRegister}
           >

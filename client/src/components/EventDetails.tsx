@@ -84,7 +84,7 @@ export const EventDetails: React.FC<EventDetailsProps> = ({ eventId, onBack, onB
 
         <div className="event-info">
           <h1 className="event-title">{event.title}</h1>
-          
+
           <div className="event-meta">
             <div className="meta-item">
               <strong>Date:</strong> {formatDate(event.date)}
@@ -96,7 +96,7 @@ export const EventDetails: React.FC<EventDetailsProps> = ({ eventId, onBack, onB
               <strong>Location:</strong> {event.location}
             </div>
             <div className="meta-item">
-              <strong>Available Spots:</strong> 
+              <strong>Available Spots:</strong>
               <span className={`capacity ${event.is_full ? 'full' : ''}`}>
                 {event.available_spots} / {event.capacity}
               </span>
@@ -115,7 +115,7 @@ export const EventDetails: React.FC<EventDetailsProps> = ({ eventId, onBack, onB
 
           <div className="event-actions">
             {isAuthenticated ? (
-              <button 
+              <button
                 className={`btn btn-primary ${event.is_full ? 'disabled' : ''}`}
                 onClick={() => onBook(event.id)}
                 disabled={event.is_full}
@@ -125,7 +125,7 @@ export const EventDetails: React.FC<EventDetailsProps> = ({ eventId, onBack, onB
             ) : (
               <div className="auth-prompt">
                 <p>Please log in to book this event</p>
-                <button 
+                <button
                   className="btn btn-primary"
                   onClick={() => window.location.href = '/login'}
                 >

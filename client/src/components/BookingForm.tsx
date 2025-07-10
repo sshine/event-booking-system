@@ -72,7 +72,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({ event, onBookingComple
     <div className="booking-form-container">
       <div className="booking-form">
         <h2>Book Your Spot</h2>
-        
+
         <div className="event-summary">
           <h3>{event.title}</h3>
           <p><strong>Date:</strong> {formatDate(event.date)}</p>
@@ -129,16 +129,16 @@ export const BookingForm: React.FC<BookingFormProps> = ({ event, onBookingComple
           </div>
 
           <div className="form-actions">
-            <button 
-              type="button" 
+            <button
+              type="button"
               className="btn btn-secondary"
               onClick={onCancel}
               disabled={loading}
             >
               Cancel
             </button>
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="btn btn-primary"
               disabled={loading}
             >

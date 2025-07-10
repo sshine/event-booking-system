@@ -76,7 +76,7 @@ event-booking-system/
    ```bash
    # Copy the example env file
    cp server/.env.example server/.env
-   
+
    # Edit server/.env and update the JWT_SECRET
    ```
 

@@ -35,8 +35,8 @@ export const MyBookings: React.FC<MyBookingsProps> = ({ onViewEvent }) => {
 
     try {
       await bookingsApi.cancel(bookingId);
-      setBookings(prev => prev.map(booking => 
-        booking.id === bookingId 
+      setBookings(prev => prev.map(booking =>
+        booking.id === bookingId
           ? { ...booking, status: 'cancelled' }
           : booking
       ));
@@ -76,7 +76,7 @@ export const MyBookings: React.FC<MyBookingsProps> = ({ onViewEvent }) => {
     return (
       <div className="error-container">
         <div className="error-message">{error}</div>
-        <button 
+        <button
           className="btn btn-primary"
           onClick={() => window.location.reload()}
         >
@@ -91,7 +91,7 @@ export const MyBookings: React.FC<MyBookingsProps> = ({ onViewEvent }) => {
       <div className="empty-state">
         <h2>No Bookings Yet</h2>
         <p>You haven't booked any events yet. Browse our events to get started!</p>
-        <button 
+        <button
           className="btn btn-primary"
           onClick={() => onViewEvent(0)}
         >
@@ -104,7 +104,7 @@ export const MyBookings: React.FC<MyBookingsProps> = ({ onViewEvent }) => {
   return (
     <div className="bookings-container">
       <h1>My Bookings</h1>
-      
+
       <div className="bookings-list">
         {bookings.map((booking) => (
           <div key={booking.id} className="booking-card">
@@ -114,7 +114,7 @@ export const MyBookings: React.FC<MyBookingsProps> = ({ onViewEvent }) => {
                 {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
               </span>
             </div>
-            
+
             <div className="booking-details">
               <div className="detail-item">
                 <strong>Date:</strong> {booking.event_date && formatDate(booking.event_date)}
@@ -140,17 +140,17 @@ export const MyBookings: React.FC<MyBookingsProps> = ({ onViewEvent }) => {
                 <strong>Booking ID:</strong> #{booking.id}
               </div>
             </div>
-            
+
             <div className="booking-actions">
-              <button 
+              <button
                 className="btn btn-secondary"
                 onClick={() => onViewEvent(booking.event_id)}
               >
                 View Event
               </button>
-              
+
               {booking.status === 'confirmed' && (
-                <button 
+                <button
                   className="btn btn-danger"
                   onClick={() => handleCancelBooking(booking.id)}
                 >

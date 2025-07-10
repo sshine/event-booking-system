@@ -11,11 +11,11 @@
   @include btn-base;
   background-color: $color-primary;
   color: $color-white;
-  
+
   &:hover:not(:disabled) {
     background-color: color.adjust($color-primary, $lightness: -10%);
   }
-  
+
   &:focus {
     @apply ring-blue-500;
   }
@@ -25,11 +25,11 @@
   @include btn-base;
   background-color: $color-secondary;
   color: $color-white;
-  
+
   &:hover:not(:disabled) {
     background-color: color.adjust($color-secondary, $lightness: -10%);
   }
-  
+
   &:focus {
     @apply ring-blue-400;
   }
@@ -39,11 +39,11 @@
   @include btn-base;
   background-color: $color-success;
   color: $color-white;
-  
+
   &:hover:not(:disabled) {
     background-color: color.adjust($color-success, $lightness: -10%);
   }
-  
+
   &:focus {
     @apply ring-green-500;
   }
@@ -53,11 +53,11 @@
   @include btn-base;
   background-color: $color-danger;
   color: $color-white;
-  
+
   &:hover:not(:disabled) {
     background-color: color.adjust($color-danger, $lightness: -10%);
   }
-  
+
   &:focus {
     @apply ring-red-500;
   }
@@ -68,12 +68,12 @@
   background-color: transparent;
   border: 2px solid $color-primary;
   color: $color-primary;
-  
+
   &:hover:not(:disabled) {
     background-color: $color-primary;
     color: $color-white;
   }
-  
+
   &:focus {
     @apply ring-blue-500;
   }
@@ -87,7 +87,7 @@
 
 @mixin card-hover {
   @apply transition-transform duration-200 hover:shadow-lg;
-  
+
   &:hover {
     transform: translateY(-2px);
   }

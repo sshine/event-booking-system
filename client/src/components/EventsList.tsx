@@ -43,7 +43,7 @@ export const EventsList: React.FC<EventsListProps> = ({ onEventSelect, onBookEve
     return (
       <div className="error-container">
         <div className="error-message">{error}</div>
-        <button 
+        <button
           className="mt-4 px-4 py-2 text-sm font-medium text-white bg-primary-blue rounded-md hover:bg-opacity-90 transition-colors"
           onClick={() => window.location.reload()}
         >

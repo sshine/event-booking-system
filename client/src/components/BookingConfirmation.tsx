@@ -102,7 +102,7 @@ export const BookingConfirmation: React.FC<BookingConfirmationProps> = ({ bookin
             </div>
           )}
           <div className="detail-item">
-            <strong>Status:</strong> 
+            <strong>Status:</strong>
             <span className={`status ${booking.status}`}>
               {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
             </span>
@@ -113,7 +113,7 @@ export const BookingConfirmation: React.FC<BookingConfirmationProps> = ({ bookin
           <button className="btn btn-primary" onClick={onBackToEvents}>
             Back to Events
           </button>
-          <button 
+          <button
             className="btn btn-secondary"
             onClick={() => window.location.href = '/bookings'}
           >

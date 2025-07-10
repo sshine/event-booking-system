@@ -63,61 +63,61 @@ function App() {
     switch (currentView) {
       case 'events':
         return (
-          <EventsList 
+          <EventsList
             onEventSelect={handleEventSelect}
             onBookEvent={handleBookEvent}
           />
         );
-      
+
       case 'event-details':
         return selectedEventId ? (
-          <EventDetails 
+          <EventDetails
             eventId={selectedEventId}
             onBack={() => setCurrentView('events')}
             onBook={handleBookEvent}
           />
         ) : null;
-      
+
       case 'booking-form':
         return selectedEvent ? (
-          <BookingForm 
+          <BookingForm
             event={selectedEvent}
             onBookingComplete={handleBookingComplete}
             onCancel={() => setCurrentView('event-details')}
           />
         ) : null;
-      
+
       case 'booking-confirmation':
         return bookingId ? (
-          <BookingConfirmation 
+          <BookingConfirmation
             bookingId={bookingId}
             onBackToEvents={() => setCurrentView('events')}
           />
         ) : null;
-      
+
       case 'login':
         return (
-          <Login 
+          <Login
             onLoginSuccess={handleAuthSuccess}
             onSwitchToRegister={() => setCurrentView('register')}
           />
         );
-      
+
       case 'register':
         return (
-          <Register 
+          <Register
             onRegisterSuccess={handleAuthSuccess}
             onSwitchToLogin={() => setCurrentView('login')}
           />
         );
-      
+
       case 'bookings':
         return (
-          <MyBookings 
+          <MyBookings
             onViewEvent={handleEventSelect}
           />
         );
-      
+
       default:
         return <EventsList onEventSelect={handleEventSelect} onBookEvent={handleBookEvent} />;
     }
@@ -126,7 +126,7 @@ function App() {
   return (
     <AuthProvider>
       <div className="app">
-        <Navigation 
+        <Navigation
           currentView={currentView}
           onViewChange={handleViewChange as (view: string) => void}
         />

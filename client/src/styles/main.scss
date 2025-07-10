@@ -2,7 +2,7 @@
 
 // Import Tailwind directives first
 @import 'tailwindcss/base';
-@import 'tailwindcss/components'; 
+@import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
 // Import our custom styles
@@ -52,7 +52,7 @@ a {
   color: $color-primary;
   text-decoration: none;
   transition: color $transition-fast;
-  
+
   &:hover {
     color: color.adjust($color-primary, $lightness: -15%);
   }
@@ -142,11 +142,11 @@ a {
   h1 {
     @apply text-3xl;
   }
-  
+
   h2 {
     @apply text-2xl;
   }
-  
+
   h3 {
     @apply text-xl;
   }
@@ -159,11 +159,11 @@ a {
   .loading-container {
     display: none;
   }
-  
+
   .main-content {
     @apply max-w-none mx-0 px-0;
   }
-  
+
   .event-card,
   .booking-card {
     @apply shadow-none border border-gray-300;

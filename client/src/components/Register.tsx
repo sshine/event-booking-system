@@ -57,7 +57,7 @@ export const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onSwitchT
     <div className="auth-container">
       <div className="auth-form">
         <h2>Register</h2>
-        
+
         {error && (
           <div className="error-message">
             {error}
@@ -119,8 +119,8 @@ export const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onSwitchT
             />
           </div>
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="btn btn-primary btn-full"
             disabled={loading}
           >
@@ -130,8 +130,8 @@ export const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onSwitchT
 
         <div className="auth-switch">
           <p>Already have an account?</p>
-          <button 
-            type="button" 
+          <button
+            type="button"
             className="btn btn-link"
             onClick={onSwitchToLogin}
           >

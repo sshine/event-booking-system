@@ -26,17 +26,17 @@ export const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChang
             EventBooker
           </h1>
         </div>
-        
+
         <div className="nav-links">
-          <button 
+          <button
             className={`nav-link ${currentView === 'events' ? 'active' : ''}`}
             onClick={() => onViewChange('events')}
           >
             Events
           </button>
-          
+
           {isAuthenticated && (
-            <button 
+            <button
               className={`nav-link ${currentView === 'bookings' ? 'active' : ''}`}
               onClick={() => onViewChange('bookings')}
             >
@@ -44,7 +44,7 @@ export const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChang
             </button>
           )}
         </div>
-        
+
         <div className="nav-auth">
           {isAuthenticated ? (
             <div className="flex items-center gap-4">
@@ -55,13 +55,13 @@ export const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChang
             </div>
           ) : (
             <div className="flex items-center gap-3">
-              <button 
+              <button
                 className="px-4 py-2 text-sm font-medium text-white bg-transparent border border-white rounded-md hover:bg-white hover:text-gray-800 transition-colors"
                 onClick={() => onViewChange('login')}
               >
                 Login
               </button>
-              <button 
+              <button
                 className="px-4 py-2 text-sm font-medium text-white bg-primary-green rounded-md hover:bg-opacity-90 transition-colors"
                 onClick={() => onViewChange('register')}
               >
