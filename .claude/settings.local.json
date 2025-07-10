@@ -18,7 +18,8 @@
       "Bash(npm run lint)",
       "Bash(ls:*)",
       "Bash(npx jest:*)",
-      "Bash(npm run test:*)"
+      "Bash(npm run test:*)",
+      "Bash(npm run lint:*)"
     ],
     "deny": []
   }
