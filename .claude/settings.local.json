@@ -5,7 +5,9 @@
       "WebFetch(domain:docs.anthropic.com)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(sqlite3:*)",
+      "Bash(find:*)"
     ],
     "deny": []
   }
