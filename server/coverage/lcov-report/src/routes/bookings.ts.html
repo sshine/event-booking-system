@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">72.27% </span>
+                <span class="strong">71.42% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>73/101</span>
+                <span class='fraction'>70/98</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">73.52% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>25/34</span>
+                <span class='fraction'>27/36</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">72.27% </span>
+                <span class="strong">71.42% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>73/101</span>
+                <span class='fraction'>70/98</span>
             </div>
         
             
@@ -314,15 +314,23 @@
 <a name='L249'></a><a href='#L249'>249</a>
 <a name='L250'></a><a href='#L250'>250</a>
 <a name='L251'></a><a href='#L251'>251</a>
-<a name='L252'></a><a href='#L252'>252</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<a name='L252'></a><a href='#L252'>252</a>
+<a name='L253'></a><a href='#L253'>253</a>
+<a name='L254'></a><a href='#L254'>254</a>
+<a name='L255'></a><a href='#L255'>255</a>
+<a name='L256'></a><a href='#L256'>256</a>
+<a name='L257'></a><a href='#L257'>257</a>
+<a name='L258'></a><a href='#L258'>258</a>
+<a name='L259'></a><a href='#L259'>259</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -432,9 +440,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">17x</span>
 <span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -454,6 +467,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -565,7 +579,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span></td><td class="text"><pre class="prettyprint lang-js">import express from 'express';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import express from 'express';
 import { body, validationResult } from 'express-validator';
 import { database } from '../models/database';
 import { CreateBookingRequest, Booking } from '../types';
@@ -578,14 +592,15 @@ const validateBooking = [
   body('attendee_name').isLength({ min: 1 }).trim().escape(),
   body('attendee_email').isEmail().normalizeEmail(),
   body('attendee_phone').optional().matches(/^\+?[\d\s\-\(\)]+$/),
+  body('quantity').optional().isInt({ min: 1, max: 10 }),
 ];
 &nbsp;
 router.get('/', authenticateToken, async (req: AuthenticatedRequest, res: express.Response) =&gt; {
   try {
     const db = database.getDb();
-    
+&nbsp;
     const query = `
-      SELECT 
+      SELECT
         b.*,
         e.title as event_title,
         e.date as event_date,
@@ -602,7 +617,7 @@ router.get('/', authenticateToken, async (req: AuthenticatedRequest, res: expres
 <span class="cstat-no" title="statement not covered" >        console.error('Database error:', err);</span>
 <span class="cstat-no" title="statement not covered" >        return res.status(500).json({ error: 'Failed to fetch bookings' });</span>
       }
-      
+&nbsp;
       res.json(rows);
     });
   } catch (error) {
@@ -615,9 +630,9 @@ router.get('/:id', authenticateToken, async (req: AuthenticatedRequest, res: exp
   try {
     const bookingId = parseInt(req.params.id!);
     const db = database.getDb();
-    
+&nbsp;
     const query = `
-      SELECT 
+      SELECT
         b.*,
         e.title as event_title,
         e.date as event_date,
@@ -635,11 +650,11 @@ router.get('/:id', authenticateToken, async (req: AuthenticatedRequest, res: exp
 <span class="cstat-no" title="statement not covered" >        console.error('Database error:', err);</span>
 <span class="cstat-no" title="statement not covered" >        return res.status(500).json({ error: 'Failed to fetch booking' });</span>
       }
-      
+&nbsp;
       if (!row) {
         return res.status(404).json({ error: 'Booking not found' });
       }
-      
+&nbsp;
       res.json(row);
     });
   } catch (error) {
@@ -657,7 +672,7 @@ router.post('/', authenticateToken, validateBooking, async (req: AuthenticatedRe
 &nbsp;
     const bookingData: CreateBookingRequest = req.body;
     const db = database.getDb();
-    
+&nbsp;
     db.serialize(() =&gt; {
       db.get(
         'SELECT * FROM events WHERE id = ? AND date &gt;= date("now")',
@@ -667,25 +682,30 @@ router.post('/', authenticateToken, validateBooking, async (req: AuthenticatedRe
 <span class="cstat-no" title="statement not covered" >            console.error('Database error:', err);</span>
 <span class="cstat-no" title="statement not covered" >            return res.status(500).json({ error: 'Failed to validate event' });</span>
           }
-          
+&nbsp;
           if (!event) {
             return res.status(404).json({ error: 'Event not found or has already passed' });
           }
-          
+&nbsp;
           db.get(
-            'SELECT COUNT(*) as booking_count FROM bookings WHERE event_id = ? AND status = "confirmed"',
+            'SELECT COALESCE(SUM(quantity), 0) as booked_spots FROM bookings WHERE event_id = ? AND status = "confirmed"',
             [bookingData.event_id],
-            (err: any, result: { booking_count: number }) =&gt; {
+            (err: any, result: { booked_spots: number }) =&gt; {
               <span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
 <span class="cstat-no" title="statement not covered" >                console.error('Database error:', err);</span>
 <span class="cstat-no" title="statement not covered" >                return res.status(500).json({ error: 'Failed to check event capacity' });</span>
               }
-              
+&nbsp;
               const eventCapacity = (event as any).capacity;
-              if (result.booking_count &gt;= eventCapacity) {
-                return res.status(400).json({ error: 'Event is fully booked' });
-              }
+              const requestedQuantity = bookingData.quantity || 1;
+              const availableSpots = eventCapacity - result.booked_spots;
               
+              if (requestedQuantity &gt; availableSpots) {
+                return res.status(400).json({ 
+                  error: `Only ${availableSpots} spots available, but ${requestedQuantity} requested` 
+                });
+              }
+&nbsp;
               db.get(
                 'SELECT id FROM bookings WHERE event_id = ? AND user_id = ?',
                 [bookingData.event_id, req.user!.id],
@@ -694,16 +714,16 @@ router.post('/', authenticateToken, validateBooking, async (req: AuthenticatedRe
 <span class="cstat-no" title="statement not covered" >                    console.error('Database error:', err);</span>
 <span class="cstat-no" title="statement not covered" >                    return res.status(500).json({ error: 'Failed to check existing booking' });</span>
                   }
-                  
+&nbsp;
                   if (existingBooking) {
                     return res.status(400).json({ error: 'You have already booked this event' });
                   }
-                  
+&nbsp;
                   const insertQuery = `
-                    INSERT INTO bookings (event_id, user_id, attendee_name, attendee_email, attendee_phone)
-                    VALUES (?, ?, ?, ?, ?)
+                    INSERT INTO bookings (event_id, user_id, attendee_name, attendee_email, attendee_phone, quantity)
+                    VALUES (?, ?, ?, ?, ?, ?)
                   `;
-                  
+&nbsp;
                   db.run(
                     insertQuery,
                     [
@@ -711,14 +731,15 @@ router.post('/', authenticateToken, validateBooking, async (req: AuthenticatedRe
                       req.user!.id,
                       bookingData.attendee_name,
                       bookingData.attendee_email,
-                      bookingData.attendee_phone
+                      bookingData.attendee_phone,
+                      requestedQuantity
                     ],
                     function(err: any) {
                       <span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
 <span class="cstat-no" title="statement not covered" >                        console.error('Database error:', err);</span>
 <span class="cstat-no" title="statement not covered" >                        return res.status(500).json({ error: 'Failed to create booking' });</span>
                       }
-                      
+&nbsp;
                       res.status(201).json({
                         message: 'Booking created successfully',
                         bookingId: this.lastID
@@ -742,7 +763,7 @@ router.put('/:id/cancel', authenticateToken, async (req: AuthenticatedRequest, r
   try {
     const bookingId = parseInt(req.params.id!);
     const db = database.getDb();
-    
+&nbsp;
     db.serialize(() =&gt; {
       db.get(
         'SELECT * FROM bookings WHERE id = ? AND user_id = ?',
@@ -752,15 +773,15 @@ router.put('/:id/cancel', authenticateToken, async (req: AuthenticatedRequest, r
 <span class="cstat-no" title="statement not covered" >            console.error('Database error:', err);</span>
 <span class="cstat-no" title="statement not covered" >            return res.status(500).json({ error: 'Failed to fetch booking' });</span>
           }
-          
+&nbsp;
           if (!booking) {
             return res.status(404).json({ error: 'Booking not found' });
           }
-          
+&nbsp;
           if ((booking as any).status === 'cancelled') {
             return res.status(400).json({ error: 'Booking is already cancelled' });
           }
-          
+&nbsp;
           db.run(
             'UPDATE bookings SET status = "cancelled" WHERE id = ?',
             [bookingId],
@@ -769,7 +790,7 @@ router.put('/:id/cancel', authenticateToken, async (req: AuthenticatedRequest, r
 <span class="cstat-no" title="statement not covered" >                console.error('Database error:', err);</span>
 <span class="cstat-no" title="statement not covered" >                return res.status(500).json({ error: 'Failed to cancel booking' });</span>
               }
-              
+&nbsp;
               res.json({ message: 'Booking cancelled successfully' });
             }
           );
@@ -786,13 +807,13 @@ router.get('/event/:eventId', authenticateToken, async (req: AuthenticatedReques
   try {
     const eventId = parseInt(req.params.eventId!);
     const db = database.getDb();
-    
+&nbsp;
     if (req.user!.role !== 'admin') {
       return res.status(403).json({ error: 'Admin access required' });
     }
-    
+&nbsp;
     const query = `
-      SELECT 
+      SELECT
         b.*,
         u.name as user_name,
         u.email as user_email
@@ -807,7 +828,7 @@ router.get('/event/:eventId', authenticateToken, async (req: AuthenticatedReques
 <span class="cstat-no" title="statement not covered" >        console.error('Database error:', err);</span>
 <span class="cstat-no" title="statement not covered" >        return res.status(500).json({ error: 'Failed to fetch event bookings' });</span>
       }
-      
+&nbsp;
       res.json(rows);
     });
   } catch (error) {
@@ -823,7 +844,7 @@ export default router;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-10T17:31:51.027Z
+                at 2025-07-10T21:42:25.213Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

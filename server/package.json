@@ -11,10 +11,10 @@
     "typecheck": "tsc --noEmit",
     "seed": "node --import ./register.mjs src/scripts/seedEvents.ts",
     "verify-events": "node --import ./register.mjs src/scripts/verifyEvents.ts",
-    "test": "node --import ./register.mjs node_modules/.bin/jest",
-    "test:watch": "node --import ./register.mjs node_modules/.bin/jest --watch",
-    "test:coverage": "node --import ./register.mjs node_modules/.bin/jest --coverage",
-    "test:verbose": "node --import ./register.mjs node_modules/.bin/jest --verbose"
+    "test": "NODE_OPTIONS='--experimental-vm-modules' jest",
+    "test:watch": "NODE_OPTIONS='--experimental-vm-modules' jest --watch",
+    "test:coverage": "NODE_OPTIONS='--experimental-vm-modules' jest --coverage",
+    "test:verbose": "NODE_OPTIONS='--experimental-vm-modules' jest --verbose"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

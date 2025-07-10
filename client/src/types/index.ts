@@ -30,6 +30,7 @@ export interface Booking {
   attendee_name: string;
   attendee_email: string;
   attendee_phone?: string;
+  quantity: number;
   booking_date: string;
   status: 'confirmed' | 'cancelled';
   event_title?: string;

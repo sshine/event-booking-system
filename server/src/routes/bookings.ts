@@ -11,6 +11,7 @@ const validateBooking = [
   body('attendee_name').isLength({ min: 1 }).trim().escape(),
   body('attendee_email').isEmail().normalizeEmail(),
   body('attendee_phone').optional().matches(/^\+?[\d\s\-\(\)]+$/),
+  body('quantity').optional().isInt({ min: 1, max: 10 }),
 ];
 
 router.get('/', authenticateToken, async (req: AuthenticatedRequest, res: express.Response) => {
@@ -106,17 +107,22 @@ router.post('/', authenticateToken, validateBooking, async (req: AuthenticatedRe
           }
 
           db.get(
-            'SELECT COUNT(*) as booking_count FROM bookings WHERE event_id = ? AND status = "confirmed"',
+            'SELECT COALESCE(SUM(quantity), 0) as booked_spots FROM bookings WHERE event_id = ? AND status = "confirmed"',
             [bookingData.event_id],
-            (err: any, result: { booking_count: number }) => {
+            (err: any, result: { booked_spots: number }) => {
               if (err) {
                 console.error('Database error:', err);
                 return res.status(500).json({ error: 'Failed to check event capacity' });
               }
 
               const eventCapacity = (event as any).capacity;
-              if (result.booking_count >= eventCapacity) {
-                return res.status(400).json({ error: 'Event is fully booked' });
+              const requestedQuantity = bookingData.quantity || 1;
+              const availableSpots = eventCapacity - result.booked_spots;
+
+              if (requestedQuantity > availableSpots) {
+                return res.status(400).json({
+                  error: `Only ${availableSpots} spots available, but ${requestedQuantity} requested`
+                });
               }
 
               db.get(
@@ -133,8 +139,8 @@ router.post('/', authenticateToken, validateBooking, async (req: AuthenticatedRe
                   }
 
                   const insertQuery = `
-                    INSERT INTO bookings (event_id, user_id, attendee_name, attendee_email, attendee_phone)
-                    VALUES (?, ?, ?, ?, ?)
+                    INSERT INTO bookings (event_id, user_id, attendee_name, attendee_email, attendee_phone, quantity)
+                    VALUES (?, ?, ?, ?, ?, ?)
                   `;
 
                   db.run(
@@ -144,7 +150,8 @@ router.post('/', authenticateToken, validateBooking, async (req: AuthenticatedRe
                       req.user!.id,
                       bookingData.attendee_name,
                       bookingData.attendee_email,
-                      bookingData.attendee_phone
+                      bookingData.attendee_phone,
+                      requestedQuantity
                     ],
                     function(err: any) {
                       if (err) {

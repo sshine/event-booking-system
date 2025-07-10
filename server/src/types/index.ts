@@ -29,6 +29,7 @@ export interface Booking {
   attendee_name: string;
   attendee_email: string;
   attendee_phone?: string;
+  quantity: number;
   booking_date: string;
   status: 'confirmed' | 'cancelled';
 }
@@ -61,6 +62,7 @@ export interface CreateBookingRequest {
   attendee_name: string;
   attendee_email: string;
   attendee_phone?: string;
+  quantity?: number;
 }
 
 export interface EventWithAvailability extends Event {

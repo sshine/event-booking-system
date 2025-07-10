@@ -7,8 +7,8 @@ These are ideas for improvements. They are not in prioritised order.
 Bring the event booking system towards a usable MVP:
 
 - Make the upcoming event overview look nice (CSS styling provided reference image)
-- Add optional image to event and make the backend crop the image
 - When booking as a logged in user, assume several of the fields are known in the backend
+- Combine the
 
 ## New features
 

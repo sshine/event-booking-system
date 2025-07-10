@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { AuthProvider } from './contexts/AuthContext';
 import { Navigation } from './components/Navigation';
 import { EventsList } from './components/EventsList';
-import { EventDetails } from './components/EventDetails';
-import { BookingForm } from './components/BookingForm';
+import { EventDetailsWithBooking } from './components/EventDetailsWithBooking';
 import { BookingConfirmation } from './components/BookingConfirmation';
 import { Login } from './components/Login';
 import { Register } from './components/Register';
@@ -11,12 +10,12 @@ import { MyBookings } from './components/MyBookings';
 import type { Event } from './types';
 import { eventsApi } from './services/api';
 
-type ViewType = 'events' | 'event-details' | 'booking-form' | 'booking-confirmation' | 'login' | 'register' | 'bookings';
+type ViewType = 'events' | 'event-details' | 'booking-confirmation' | 'login' | 'register' | 'bookings';
 
 function App() {
   const [currentView, setCurrentView] = useState<ViewType>('events');
   const [selectedEventId, setSelectedEventId] = useState<number | null>(null);
-  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [, setSelectedEvent] = useState<Event | null>(null);
   const [bookingId, setBookingId] = useState<number | null>(null);
 
   const handleViewChange = (view: ViewType) => {
@@ -44,7 +43,7 @@ function App() {
       const event = await eventsApi.getById(eventId);
       setSelectedEvent(event);
       setSelectedEventId(eventId);
-      setCurrentView('booking-form');
+      setCurrentView('event-details');
     } catch (error) {
       console.error('Error fetching event for booking:', error);
     }
@@ -71,19 +70,10 @@ function App() {
 
       case 'event-details':
         return selectedEventId ? (
-          <EventDetails
+          <EventDetailsWithBooking
             eventId={selectedEventId}
             onBack={() => setCurrentView('events')}
-            onBook={handleBookEvent}
-          />
-        ) : null;
-
-      case 'booking-form':
-        return selectedEvent ? (
-          <BookingForm
-            event={selectedEvent}
             onBookingComplete={handleBookingComplete}
-            onCancel={() => setCurrentView('event-details')}
           />
         ) : null;
 

@@ -229,7 +229,7 @@ describe('Bookings API', () => {
           attendee_email: 'different@example.com'
         }));
 
-      expectError(response, 400, 'Event is fully booked');
+      expectError(response, 400, 'spots available, but');
     });
 
     it('should validate required fields', async () => {
@@ -440,7 +440,7 @@ describe('Bookings API', () => {
       expect(successResponses).toHaveLength(1);
       expect(failureResponses).toHaveLength(1);
       if (failureResponses[0]) {
-        expect(failureResponses[0].body.error).toContain('Event is fully booked');
+        expect(failureResponses[0].body.error).toContain('spots available, but');
       }
     });
   });

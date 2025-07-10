@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.9% </span>
+                <span class="strong">92.3% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>77/82</span>
+                <span class='fraction'>60/65</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">92.06% </span>
+                <span class="strong">91.52% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>58/63</span>
+                <span class='fraction'>54/59</span>
             </div>
         
             
@@ -265,9 +265,10 @@
 <a name='L200'></a><a href='#L200'>200</a>
 <a name='L201'></a><a href='#L201'>201</a>
 <a name='L202'></a><a href='#L202'>202</a>
-<a name='L203'></a><a href='#L203'>203</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<a name='L203'></a><a href='#L203'>203</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -387,7 +388,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">33x</span>
 <span class="cline-any cline-yes">33x</span>
-<span class="cline-any cline-yes">33x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">33x</span>
 <span class="cline-any cline-yes">33x</span>
@@ -468,6 +468,7 @@
 <span class="cline-any cline-yes">45x</span>
 <span class="cline-any cline-yes">45x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import request from 'supertest';
+import bcrypt from 'bcryptjs';
 import { createApp } from '../index';
 import { database } from '../models/database';
 import { CreateUserRequest, CreateEventRequest, CreateBookingRequest } from '../types';
@@ -506,7 +507,7 @@ export interface TestBooking {
   attendee_phone?: string;
 }
 &nbsp;
-// Test data factories
+// Test data factorie
 export const createTestUser = (overrides: Partial&lt;TestUser&gt; = {}): TestUser =&gt; ({
   email: 'test@example.com',
   password: 'password123',
@@ -543,7 +544,7 @@ export const createTestBooking = (overrides: Partial&lt;TestBooking&gt; = {}): T
   ...overrides,
 });
 &nbsp;
-// Authentication helpers
+// Authentication helper
 export const registerUser = async (userData: TestUser): Promise&lt;{ user: any; token: string }&gt; =&gt; {
   const app = getApp();
   const response = await request(app)
@@ -553,10 +554,10 @@ export const registerUser = async (userData: TestUser): Promise&lt;{ user: any; 
       password: userData.password,
       name: userData.name,
     });
-  
+&nbsp;
   expect(response.status).toBe(201);
   expect(response.body.token).toBeDefined();
-  
+&nbsp;
   return {
     user: response.body.user,
     token: response.body.token,
@@ -568,35 +569,34 @@ export const loginUser = async (email: string, password: string): Promise&lt;{ u
   const response = await request(app)
     .post('/api/auth/login')
     .send({ email, password });
-  
+&nbsp;
   expect(response.status).toBe(200);
   expect(response.body.token).toBeDefined();
-  
+&nbsp;
   return {
     user: response.body.user,
     token: response.body.token,
   };
 };
 &nbsp;
-// Database helpers
+// Database helper
 export const createUserInDb = async (userData: TestUser): Promise&lt;{ user: any; token: string }&gt; =&gt; {
   return registerUser(userData);
 };
 &nbsp;
 export const createAdminInDb = async (): Promise&lt;{ user: any; token: string }&gt; =&gt; {
   const db = database.getDb();
-  
+&nbsp;
   // First create the admin user directly in the database
   return new Promise((resolve, reject) =&gt; {
     const adminData = createTestAdmin();
-    const bcrypt = require('bcryptjs');
-    
+&nbsp;
     bcrypt.hash(adminData.password, 10, (err: any, hashedPassword: string) =&gt; {
       <span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
 <span class="cstat-no" title="statement not covered" >        reject(err);</span>
 <span class="cstat-no" title="statement not covered" >        return;</span>
       }
-      
+&nbsp;
       db.run(
         `INSERT INTO users (email, password, name, role) VALUES (?, ?, ?, 'admin')`,
         [adminData.email, hashedPassword, adminData.name],
@@ -605,7 +605,7 @@ export const createAdminInDb = async (): Promise&lt;{ user: any; token: string }
 <span class="cstat-no" title="statement not covered" >            reject(err);</span>
 <span class="cstat-no" title="statement not covered" >            return;</span>
           }
-          
+&nbsp;
           try {
             const { user, token } = await loginUser(adminData.email, adminData.password);
             resolve({ user, token });
@@ -624,9 +624,9 @@ export const createEventInDb = async (eventData: TestEvent, adminToken: string):
     .post('/api/events')
     .set('Authorization', `Bearer ${adminToken}`)
     .send(eventData);
-  
+&nbsp;
   expect(response.status).toBe(201);
-  
+&nbsp;
   return {
     id: response.body.eventId,
     ...eventData,
@@ -639,16 +639,16 @@ export const createBookingInDb = async (bookingData: TestBooking, userToken: str
     .post('/api/bookings')
     .set('Authorization', `Bearer ${userToken}`)
     .send(bookingData);
-  
+&nbsp;
   expect(response.status).toBe(201);
-  
+&nbsp;
   return {
     id: response.body.bookingId,
     ...bookingData,
   };
 };
 &nbsp;
-// Utility functions
+// Utility function
 export const expectError = (response: any, status: number, errorMessage?: string) =&gt; {
   expect(response.status).toBe(status);
   expect(response.body.error).toBeDefined();
@@ -676,7 +676,7 @@ export const expectSuccessResponse = (response: any, status: number = 200) =&gt;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-10T17:31:51.027Z
+                at 2025-07-10T21:42:25.213Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

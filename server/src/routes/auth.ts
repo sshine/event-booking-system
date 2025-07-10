@@ -18,6 +18,10 @@ const validateLogin = [
   body('password').isLength({ min: 1 }),
 ];
 
+const validateEmailCheck = [
+  body('email').isEmail().normalizeEmail(),
+];
+
 router.post('/register', validateRegister, async (req: express.Request, res: express.Response) => {
   try {
     const errors = validationResult(req);
@@ -156,6 +160,33 @@ router.get('/me', authenticateToken, async (req: AuthenticatedRequest, res) => {
 
 router.post('/logout', authenticateToken, async (req: AuthenticatedRequest, res: express.Response) => {
   res.json({ message: 'Logged out successfully' });
+});
+
+router.post('/check-email', validateEmailCheck, async (req: express.Request, res: express.Response) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { email } = req.body;
+    const db = database.getDb();
+
+    db.get('SELECT id, name FROM users WHERE email = ?', [email], (err: any, user: any) => {
+      if (err) {
+        console.error('Database error:', err);
+        return res.status(500).json({ error: 'Database error' });
+      }
+
+      res.json({
+        exists: !!user,
+        name: user?.name || null
+      });
+    });
+  } catch (error) {
+    console.error('Email check error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 export default router;

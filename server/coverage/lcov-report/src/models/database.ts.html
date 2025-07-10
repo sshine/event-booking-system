@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">76.19% </span>
+                <span class="strong">75.86% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>16/21</span>
+                <span class='fraction'>22/29</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">57.14% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/6</span>
+                <span class='fraction'>8/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
+                <span class="strong">77.77% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>4/6</span>
+                <span class='fraction'>7/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">76.19% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>16/21</span>
+                <span class='fraction'>21/28</span>
             </div>
         
             
@@ -148,12 +148,38 @@
 <a name='L83'></a><a href='#L83'>83</a>
 <a name='L84'></a><a href='#L84'>84</a>
 <a name='L85'></a><a href='#L85'>85</a>
-<a name='L86'></a><a href='#L86'>86</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
+<a name='L86'></a><a href='#L86'>86</a>
+<a name='L87'></a><a href='#L87'>87</a>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a>
+<a name='L92'></a><a href='#L92'>92</a>
+<a name='L93'></a><a href='#L93'>93</a>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a>
+<a name='L96'></a><a href='#L96'>96</a>
+<a name='L97'></a><a href='#L97'>97</a>
+<a name='L98'></a><a href='#L98'>98</a>
+<a name='L99'></a><a href='#L99'>99</a>
+<a name='L100'></a><a href='#L100'>100</a>
+<a name='L101'></a><a href='#L101'>101</a>
+<a name='L102'></a><a href='#L102'>102</a>
+<a name='L103'></a><a href='#L103'>103</a>
+<a name='L104'></a><a href='#L104'>104</a>
+<a name='L105'></a><a href='#L105'>105</a>
+<a name='L106'></a><a href='#L106'>106</a>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -213,9 +239,27 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">36x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -235,6 +279,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span></td><td class="text"><pre class="prettyprint lang-js">import sqlite3 from 'sqlite3';
 import path from 'path';
+import { fileURLToPath } from 'url';
+&nbsp;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 &nbsp;
 const DATABASE_PATH = process.env.DATABASE_URL || path.join(__dirname, '../../database.sqlite');
 &nbsp;
@@ -290,6 +338,7 @@ export class Database {
         attendee_name TEXT NOT NULL,
         attendee_email TEXT NOT NULL,
         attendee_phone TEXT,
+        quantity INTEGER DEFAULT 1,
         booking_date DATETIME DEFAULT CURRENT_TIMESTAMP,
         status TEXT DEFAULT 'confirmed' CHECK(status IN ('confirmed', 'cancelled')),
         FOREIGN KEY (event_id) REFERENCES events (id),
@@ -301,6 +350,23 @@ export class Database {
     this.db.exec(createUsersTable);
     this.db.exec(createEventsTable);
     this.db.exec(createBookingsTable);
+    
+    // Add quantity column to existing bookings table if it doesn't exist
+    this.db.run(`
+      PRAGMA table_info(bookings)
+    `, (err: any, rows: any) =&gt; {
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (!err) {
+        this.db.all(`PRAGMA table_info(bookings)`, (err: any, columns: any[]) =&gt; {
+          <span class="missing-if-branch" title="else path not taken" >E</span>if (!err &amp;&amp; columns) {
+            const hasQuantityColumn = columns.some(col =&gt; col.name === 'quantity');
+            <span class="missing-if-branch" title="if path not taken" >I</span>if (!hasQuantityColumn) {
+<span class="cstat-no" title="statement not covered" >              this.db.run(`ALTER TABLE bookings ADD COLUMN quantity INTEGER DEFAULT 1`);</span>
+<span class="cstat-no" title="statement not covered" >              console.log('Added quantity column to bookings table');</span>
+            }
+          }
+        });
+      }
+    });
   }
 &nbsp;
   public getDb(): sqlite3.Database {
@@ -325,7 +391,7 @@ export const database = new Database();</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-10T17:31:51.027Z
+                at 2025-07-10T21:42:25.213Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

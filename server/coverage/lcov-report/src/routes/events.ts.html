@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75.9% </span>
+                <span class="strong">74.35% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>63/83</span>
+                <span class='fraction'>58/78</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75.6% </span>
+                <span class="strong">74.02% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>62/82</span>
+                <span class='fraction'>57/77</span>
             </div>
         
             
@@ -283,11 +283,12 @@
 <a name='L218'></a><a href='#L218'>218</a>
 <a name='L219'></a><a href='#L219'>219</a>
 <a name='L220'></a><a href='#L220'>220</a>
-<a name='L221'></a><a href='#L221'>221</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<a name='L221'></a><a href='#L221'>221</a>
+<a name='L222'></a><a href='#L222'>222</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -503,7 +504,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span></td><td class="text"><pre class="prettyprint lang-js">import express from 'express';
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import express from 'express';
 import { body, validationResult } from 'express-validator';
 import { database } from '../models/database';
 import { CreateEventRequest, Event, EventWithAvailability } from '../types';
@@ -526,12 +528,12 @@ const validateEvent = [
 router.get('/', async (req: express.Request, res: express.Response) =&gt; {
   try {
     const db = database.getDb();
-    
+&nbsp;
     const query = `
-      SELECT 
+      SELECT
         e.*,
-        COALESCE(e.capacity - COUNT(b.id), e.capacity) as available_spots,
-        CASE WHEN COUNT(b.id) &gt;= e.capacity THEN 1 ELSE 0 END as is_full
+        COALESCE(e.capacity - COALESCE(SUM(b.quantity), 0), e.capacity) as available_spots,
+        CASE WHEN COALESCE(SUM(b.quantity), 0) &gt;= e.capacity THEN 1 ELSE 0 END as is_full
       FROM events e
       LEFT JOIN bookings b ON e.id = b.event_id AND b.status = 'confirmed'
       WHERE e.date &gt;= date('now')
@@ -544,12 +546,12 @@ router.get('/', async (req: express.Request, res: express.Response) =&gt; {
 <span class="cstat-no" title="statement not covered" >        console.error('Database error:', err);</span>
 <span class="cstat-no" title="statement not covered" >        return res.status(500).json({ error: 'Failed to fetch events' });</span>
       }
-      
+&nbsp;
       const events = rows.map(event =&gt; ({
         ...event,
         is_full: Boolean(event.is_full)
       }));
-      
+&nbsp;
       res.json(events);
     });
   } catch (error) {
@@ -561,18 +563,18 @@ router.get('/', async (req: express.Request, res: express.Response) =&gt; {
 router.get('/:id', async (req: express.Request, res: express.Response) =&gt; {
   try {
     const eventId = parseInt(req.params.id!);
-    
+&nbsp;
     if (isNaN(eventId)) {
       return res.status(400).json({ error: 'Invalid event ID' });
     }
-    
+&nbsp;
     const db = database.getDb();
-    
+&nbsp;
     const query = `
-      SELECT 
+      SELECT
         e.*,
-        COALESCE(e.capacity - COUNT(b.id), e.capacity) as available_spots,
-        CASE WHEN COUNT(b.id) &gt;= e.capacity THEN 1 ELSE 0 END as is_full
+        COALESCE(e.capacity - COALESCE(SUM(b.quantity), 0), e.capacity) as available_spots,
+        CASE WHEN COALESCE(SUM(b.quantity), 0) &gt;= e.capacity THEN 1 ELSE 0 END as is_full
       FROM events e
       LEFT JOIN bookings b ON e.id = b.event_id AND b.status = 'confirmed'
       WHERE e.id = ?
@@ -584,16 +586,16 @@ router.get('/:id', async (req: express.Request, res: express.Response) =&gt; {
 <span class="cstat-no" title="statement not covered" >        console.error('Database error:', err);</span>
 <span class="cstat-no" title="statement not covered" >        return res.status(500).json({ error: 'Failed to fetch event' });</span>
       }
-      
+&nbsp;
       if (!row) {
         return res.status(404).json({ error: 'Event not found' });
       }
-      
+&nbsp;
       const event = {
         ...row,
         is_full: Boolean(row.is_full)
       };
-      
+&nbsp;
       res.json(event);
     });
   } catch (error) {
@@ -611,7 +613,7 @@ router.post('/', authenticateToken, requireAdmin, validateEvent, async (req: Aut
 &nbsp;
     const eventData: CreateEventRequest = req.body;
     const db = database.getDb();
-    
+&nbsp;
     const query = `
       INSERT INTO events (title, description, date, start_time, end_time, location, capacity, price, image_url, created_by)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -636,7 +638,7 @@ router.post('/', authenticateToken, requireAdmin, validateEvent, async (req: Aut
 <span class="cstat-no" title="statement not covered" >          console.error('Database error:', err);</span>
 <span class="cstat-no" title="statement not covered" >          return res.status(500).json({ error: 'Failed to create event' });</span>
         }
-        
+&nbsp;
         res.status(201).json({
           message: 'Event created successfully',
           eventId: this.lastID
@@ -659,10 +661,10 @@ router.put('/:id', authenticateToken, requireAdmin, validateEvent, async (req: A
     const eventId = parseInt(req.params.id!);
     const eventData: CreateEventRequest = req.body;
     const db = database.getDb();
-    
+&nbsp;
     const query = `
-      UPDATE events 
-      SET title = ?, description = ?, date = ?, start_time = ?, end_time = ?, 
+      UPDATE events
+      SET title = ?, description = ?, date = ?, start_time = ?, end_time = ?,
           location = ?, capacity = ?, price = ?, image_url = ?
       WHERE id = ?
     `;
@@ -686,11 +688,11 @@ router.put('/:id', authenticateToken, requireAdmin, validateEvent, async (req: A
 <span class="cstat-no" title="statement not covered" >          console.error('Database error:', err);</span>
 <span class="cstat-no" title="statement not covered" >          return res.status(500).json({ error: 'Failed to update event' });</span>
         }
-        
+&nbsp;
         if (this.changes === 0) {
           return res.status(404).json({ error: 'Event not found' });
         }
-        
+&nbsp;
         res.json({ message: 'Event updated successfully' });
       }
     );
@@ -704,17 +706,17 @@ router.delete('/:id', authenticateToken, requireAdmin, async (req: Authenticated
   try {
     const eventId = parseInt(req.params.id!);
     const db = database.getDb();
-    
+&nbsp;
     db.run('DELETE FROM events WHERE id = ?', [eventId], function(err: any) {
       <span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
 <span class="cstat-no" title="statement not covered" >        console.error('Database error:', err);</span>
 <span class="cstat-no" title="statement not covered" >        return res.status(500).json({ error: 'Failed to delete event' });</span>
       }
-      
+&nbsp;
       if (this.changes === 0) {
         return res.status(404).json({ error: 'Event not found' });
       }
-      
+&nbsp;
       res.json({ message: 'Event deleted successfully' });
     });
   } catch (error) {
@@ -723,14 +725,15 @@ router.delete('/:id', authenticateToken, requireAdmin, async (req: Authenticated
   }
 });
 &nbsp;
-export default router;</pre></td></tr></table></pre>
+export default router;
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-10T17:31:51.027Z
+                at 2025-07-10T21:42:25.213Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

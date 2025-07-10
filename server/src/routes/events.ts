@@ -25,8 +25,8 @@ router.get('/', async (req: express.Request, res: express.Response) => {
     const query = `
       SELECT
         e.*,
-        COALESCE(e.capacity - COUNT(b.id), e.capacity) as available_spots,
-        CASE WHEN COUNT(b.id) >= e.capacity THEN 1 ELSE 0 END as is_full
+        COALESCE(e.capacity - COALESCE(SUM(b.quantity), 0), e.capacity) as available_spots,
+        CASE WHEN COALESCE(SUM(b.quantity), 0) >= e.capacity THEN 1 ELSE 0 END as is_full
       FROM events e
       LEFT JOIN bookings b ON e.id = b.event_id AND b.status = 'confirmed'
       WHERE e.date >= date('now')
@@ -66,8 +66,8 @@ router.get('/:id', async (req: express.Request, res: express.Response) => {
     const query = `
       SELECT
         e.*,
-        COALESCE(e.capacity - COUNT(b.id), e.capacity) as available_spots,
-        CASE WHEN COUNT(b.id) >= e.capacity THEN 1 ELSE 0 END as is_full
+        COALESCE(e.capacity - COALESCE(SUM(b.quantity), 0), e.capacity) as available_spots,
+        CASE WHEN COALESCE(SUM(b.quantity), 0) >= e.capacity THEN 1 ELSE 0 END as is_full
       FROM events e
       LEFT JOIN bookings b ON e.id = b.event_id AND b.status = 'confirmed'
       WHERE e.id = ?
@@ -156,7 +156,7 @@ router.put('/:id', authenticateToken, requireAdmin, validateEvent, async (req: A
     const db = database.getDb();
 
     const query = `
-      UPDATE event
+      UPDATE events
       SET title = ?, description = ?, date = ?, start_time = ?, end_time = ?,
           location = ?, capacity = ?, price = ?, image_url = ?
       WHERE id = ?

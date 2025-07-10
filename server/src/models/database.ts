@@ -59,6 +59,7 @@ export class Database {
         attendee_name TEXT NOT NULL,
         attendee_email TEXT NOT NULL,
         attendee_phone TEXT,
+        quantity INTEGER DEFAULT 1,
         booking_date DATETIME DEFAULT CURRENT_TIMESTAMP,
         status TEXT DEFAULT 'confirmed' CHECK(status IN ('confirmed', 'cancelled')),
         FOREIGN KEY (event_id) REFERENCES events (id),
@@ -70,6 +71,23 @@ export class Database {
     this.db.exec(createUsersTable);
     this.db.exec(createEventsTable);
     this.db.exec(createBookingsTable);
+
+    // Add quantity column to existing bookings table if it doesn't exist
+    this.db.run(`
+      PRAGMA table_info(bookings)
+    `, (err: any, rows: any) => {
+      if (!err) {
+        this.db.all(`PRAGMA table_info(bookings)`, (err: any, columns: any[]) => {
+          if (!err && columns) {
+            const hasQuantityColumn = columns.some(col => col.name === 'quantity');
+            if (!hasQuantityColumn) {
+              this.db.run(`ALTER TABLE bookings ADD COLUMN quantity INTEGER DEFAULT 1`);
+              console.log('Added quantity column to bookings table');
+            }
+          }
+        });
+      }
+    });
   }
 
   public getDb(): sqlite3.Database {

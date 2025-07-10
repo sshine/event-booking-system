@@ -1,4 +1,5 @@
 import request from 'supertest';
+import bcrypt from 'bcryptjs';
 import { createApp } from '../index';
 import { database } from '../models/database';
 import { CreateUserRequest, CreateEventRequest, CreateBookingRequest } from '../types';
@@ -120,7 +121,6 @@ export const createAdminInDb = async (): Promise<{ user: any; token: string }> =
   // First create the admin user directly in the database
   return new Promise((resolve, reject) => {
     const adminData = createTestAdmin();
-    const bcrypt = require('bcryptjs');
 
     bcrypt.hash(adminData.password, 10, (err: any, hashedPassword: string) => {
       if (err) {

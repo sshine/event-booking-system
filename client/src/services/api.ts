@@ -49,6 +49,11 @@ export const authApi = {
   logout: async (): Promise<void> => {
     await api.post('/auth/logout');
   },
+
+  checkEmail: async (data: { email: string }): Promise<{ exists: boolean; name: string | null }> => {
+    const response = await api.post('/auth/check-email', data);
+    return response.data;
+  },
 };
 
 export const eventsApi = {
@@ -94,6 +99,7 @@ export const bookingsApi = {
     attendee_name: string;
     attendee_email: string;
     attendee_phone?: string;
+    quantity?: number;
   }): Promise<{ message: string; bookingId: number }> => {
     const response = await api.post('/bookings', bookingData);
     return response.data;

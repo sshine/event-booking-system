@@ -469,3 +469,163 @@
     z-index: -1;
   }
 }
+
+// Combined Event Details + Booking Layout
+.event-details-with-booking {
+  .event-header {
+    @apply mb-6;
+
+    .back-button {
+      @apply bg-gray-100 text-gray-700;
+
+      &:hover {
+        @apply bg-gray-200;
+      }
+    }
+  }
+
+  .event-details-booking-layout {
+    @apply grid gap-8;
+    grid-template-columns: 1fr;
+
+    // Desktop: side-by-side layout
+    @media (min-width: 1024px) {
+      grid-template-columns: 2fr 1fr;
+      gap: 3rem;
+    }
+  }
+
+  .event-details-column {
+    .event-hero-image {
+      @apply w-full h-64 md:h-80 object-cover rounded-lg mb-6;
+    }
+
+    .event-info {
+      .event-title {
+        @apply text-2xl md:text-3xl font-bold mb-4;
+        color: $color-primary;
+      }
+
+      .event-meta {
+        @apply space-y-3 mb-6;
+
+        .meta-item {
+          @apply flex items-center gap-3 text-gray-700;
+
+          .meta-icon {
+            @apply w-5 h-5 flex-shrink-0;
+            color: $color-secondary;
+          }
+
+          strong {
+            @apply mr-2;
+          }
+
+          .capacity {
+            @apply font-semibold;
+            color: $color-success;
+
+            &.full {
+              color: $color-danger;
+            }
+          }
+        }
+      }
+
+      .event-description {
+        h3 {
+          @apply text-xl font-semibold mb-3;
+          color: $color-primary;
+        }
+
+        p {
+          @apply text-gray-700 leading-relaxed;
+        }
+      }
+    }
+  }
+
+  .booking-form-column {
+    // Mobile: full width
+    @apply w-full;
+
+    // Desktop: sticky positioning
+    @media (min-width: 1024px) {
+      position: sticky;
+      top: 2rem;
+      height: fit-content;
+    }
+
+    .booking-form-container {
+      @apply bg-white rounded-lg shadow-lg p-6;
+      border: 1px solid $gray-light;
+
+      h2 {
+        @apply text-xl font-semibold mb-4;
+        color: $color-primary;
+      }
+
+      .booking-unavailable {
+        @apply text-center py-8;
+
+        h3 {
+          @apply text-lg font-semibold mb-2;
+          color: $color-danger;
+        }
+
+        p {
+          @apply text-gray-600;
+        }
+      }
+
+      .booking-form {
+        @apply space-y-4;
+
+        .form-group {
+          @apply space-y-2;
+
+          label {
+            @apply block text-sm font-medium text-gray-700;
+          }
+
+          input, select {
+            @include form-input;
+          }
+
+          .btn-small {
+            @apply mt-2 px-3 py-1 text-xs;
+          }
+        }
+
+        .auth-info {
+          @apply bg-blue-50 border border-blue-200 rounded-md p-3 mb-4;
+
+          p {
+            @apply text-sm text-blue-800 mb-0;
+          }
+        }
+
+        .price-summary {
+          @apply bg-gray-50 rounded-md p-4 space-y-2;
+
+          .price-row {
+            @apply flex justify-between items-center text-sm;
+          }
+
+          .price-total {
+            @apply flex justify-between items-center pt-2 border-t border-gray-200 font-semibold;
+            color: $color-primary;
+          }
+        }
+
+        .btn-full {
+          @apply w-full;
+        }
+
+        .error-message {
+          @apply bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-md text-sm;
+        }
+      }
+    }
+  }
+}
