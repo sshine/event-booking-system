@@ -8,64 +8,64 @@
   background-color: $color-gray-800;
   color: $color-white;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  
+
   .nav-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 1rem 2rem;
-    
+
     @include mobile-only {
       padding: 0.75rem 1rem;
       flex-direction: column;
       gap: 1rem;
     }
   }
-  
+
   .nav-brand {
     font-size: 1.5rem;
     font-weight: 700;
     color: $color-white;
-    
+
     &:hover {
       color: $color-accent;
     }
   }
-  
+
   .nav-links {
     display: flex;
     align-items: center;
     gap: 1.5rem;
-    
+
     @include mobile-only {
       flex-wrap: wrap;
       justify-content: center;
       gap: 1rem;
     }
   }
-  
+
   .nav-link {
     padding: 0.5rem 0.75rem;
     border-radius: 0.375rem;
     font-size: 0.875rem;
     font-weight: 500;
     transition: all 0.2s;
-    
+
     &:hover {
       background-color: rgba(255, 255, 255, 0.1);
     }
-    
+
     &.active {
       background-color: $color-primary;
       color: $color-white;
     }
   }
-  
+
   .nav-auth {
     display: flex;
     align-items: center;
     gap: 1rem;
-    
+
     @include mobile-only {
       flex-wrap: wrap;
       justify-content: center;
@@ -78,35 +78,92 @@
 .event-card {
   @include card-base;
   @include card-hover;
-  
+
   .event-image {
     @apply w-full h-48 object-cover;
   }
-  
+
   .event-content {
     @include card-content;
   }
-  
+
   .event-title {
     @include heading-4;
     @apply mb-2;
   }
-  
+
   .event-description {
     @include body-text;
     @apply mb-4;
   }
-  
+
   .event-meta {
     @apply space-y-2 mb-4;
   }
-  
+
   .event-detail {
     @apply flex items-center gap-2 text-sm text-gray-600;
   }
-  
+
   .event-actions {
     @apply flex gap-2;
+  }
+}
+
+// New redesigned event card
+.event-card-redesign {
+  @apply bg-white rounded-lg shadow-lg overflow-hidden transition-transform duration-200 hover:scale-105 hover:shadow-xl;
+
+  .event-image {
+    @apply w-full h-48 object-cover;
+  }
+
+  .event-content {
+    @apply p-4;
+  }
+
+  .event-title {
+    @apply text-lg font-semibold text-gray-900 mb-2;
+  }
+
+  .event-meta {
+    @apply space-y-2 mb-4;
+  }
+
+  .event-detail {
+    @apply flex items-center gap-2 text-sm text-gray-600;
+  }
+
+  .event-price {
+    @apply flex items-center gap-2;
+
+    .current-price {
+      @apply text-xl font-bold text-blue-600;
+    }
+
+    .original-price {
+      @apply text-sm text-gray-500 line-through;
+    }
+  }
+
+  .discount-badge {
+    @apply absolute top-3 left-3 bg-red-500 text-white px-2 py-1 rounded-md text-sm font-bold;
+  }
+
+  .category-badge {
+    @apply absolute top-3 right-3 bg-white bg-opacity-90 px-2 py-1 rounded-md text-xs font-medium text-gray-700;
+  }
+
+  .get-tickets-btn {
+    @apply w-full px-4 py-2 text-sm font-medium rounded-md transition-colors;
+
+    &:not(:disabled) {
+      @apply bg-blue-600 text-white hover:bg-blue-700;
+    }
+
+    &:disabled {
+      @apply bg-gray-300 text-gray-500 cursor-not-allowed;
+    }
   }
 }
 
@@ -126,11 +183,11 @@
 
 .form-group {
   @include form-group;
-  
+
   label {
     @include form-label;
   }
-  
+
   input {
     @include form-input;
   }
@@ -138,7 +195,7 @@
 
 .form-actions {
   @apply flex gap-3 mt-6;
-  
+
   .btn {
     @apply flex-1;
   }
@@ -147,31 +204,31 @@
 // Button Components
 .btn {
   @include btn-base;
-  
+
   &.btn-primary {
     @include btn-primary;
   }
-  
+
   &.btn-secondary {
     @include btn-secondary;
   }
-  
+
   &.btn-success {
     @include btn-success;
   }
-  
+
   &.btn-danger {
     @include btn-danger;
   }
-  
+
   &.btn-outline {
     @include btn-outline;
   }
-  
+
   &.btn-lg {
     @apply px-6 py-3 text-base;
   }
-  
+
   &.btn-sm {
     @apply px-3 py-1.5 text-xs;
   }
@@ -182,11 +239,11 @@
   &.status-confirmed {
     @include status-success;
   }
-  
+
   &.status-cancelled {
     @include status-danger;
   }
-  
+
   &.status-pending {
     @include status-warning;
   }
@@ -195,15 +252,15 @@
 // Capacity Indicators
 .capacity {
   @apply inline-flex items-center gap-1 text-sm font-medium;
-  
+
   &.available {
     color: $color-success;
   }
-  
+
   &.limited {
     color: $color-warning;
   }
-  
+
   &.full {
     color: $color-danger;
   }
@@ -234,16 +291,16 @@
 // Empty States
 .empty-state {
   @apply text-center py-12;
-  
+
   .empty-icon {
     @apply text-6xl text-gray-400 mb-4;
   }
-  
+
   .empty-title {
     @include heading-3;
     @apply text-gray-600 mb-2;
   }
-  
+
   .empty-description {
     @include body-text;
     @apply mb-6;
@@ -254,31 +311,31 @@
 .booking-card {
   @include card-base;
   @apply p-6;
-  
+
   .booking-header {
     @apply flex items-center justify-between mb-4;
   }
-  
+
   .booking-title {
     @include heading-4;
   }
-  
+
   .booking-details {
     @apply grid grid-cols-1 md:grid-cols-2 gap-4 mb-6;
   }
-  
+
   .booking-detail {
     @apply flex items-center gap-2 text-sm;
-    
+
     .label {
       @apply font-medium text-gray-700;
     }
-    
+
     .value {
       @apply text-gray-600;
     }
   }
-  
+
   .booking-actions {
     @apply flex gap-2;
   }
@@ -287,31 +344,31 @@
 // Confirmation Components
 .confirmation-container {
   @apply max-w-2xl mx-auto text-center;
-  
+
   .confirmation-card {
     @include card-base;
     @apply p-8;
   }
-  
+
   .success-icon {
     @apply text-6xl mb-4;
     color: $color-success;
   }
-  
+
   .confirmation-title {
     @include heading-2;
     @apply mb-4;
   }
-  
+
   .confirmation-message {
     @include body-text;
     @apply mb-6;
   }
-  
+
   .confirmation-details {
     @apply bg-gray-50 rounded-lg p-6 mb-6 text-left;
   }
-  
+
   .confirmation-actions {
     @apply flex justify-center gap-4;
   }
