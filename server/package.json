@@ -5,16 +5,16 @@
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "NODE_OPTIONS='--loader ts-node/esm' node --watch src/index.ts",
+    "dev": "node --import ./register.mjs --watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
     "typecheck": "tsc --noEmit",
-    "seed": "NODE_OPTIONS='--loader ts-node/esm' node src/scripts/seedEvents.ts",
-    "verify-events": "NODE_OPTIONS='--loader ts-node/esm' node src/scripts/verifyEvents.ts",
-    "test": "NODE_OPTIONS='--loader ts-node/esm' jest",
-    "test:watch": "NODE_OPTIONS='--loader ts-node/esm' jest --watch",
-    "test:coverage": "NODE_OPTIONS='--loader ts-node/esm' jest --coverage",
-    "test:verbose": "NODE_OPTIONS='--loader ts-node/esm' jest --verbose"
+    "seed": "node --import ./register.mjs src/scripts/seedEvents.ts",
+    "verify-events": "node --import ./register.mjs src/scripts/verifyEvents.ts",
+    "test": "node --import ./register.mjs node_modules/.bin/jest",
+    "test:watch": "node --import ./register.mjs node_modules/.bin/jest --watch",
+    "test:coverage": "node --import ./register.mjs node_modules/.bin/jest --coverage",
+    "test:verbose": "node --import ./register.mjs node_modules/.bin/jest --verbose"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
