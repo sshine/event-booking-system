@@ -1,0 +1,171 @@
+// Main stylesheet - imports everything
+
+// Import Tailwind directives first
+@import 'tailwindcss/base';
+@import 'tailwindcss/components'; 
+@import 'tailwindcss/utilities';
+
+// Import our custom styles
+@use 'variables' as *;
+@use 'sass:color';
+@use 'navigation';
+
+// Base styles
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: $font-family-sans;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: $bg-secondary;
+  color: $text-primary;
+  line-height: $leading-normal;
+}
+
+// Application layout
+.app {
+  @apply min-h-screen flex flex-col;
+}
+
+.main-content {
+  @apply flex-1;
+  @include container;
+  @include section-padding;
+}
+
+// Typography base styles
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: $leading-tight;
+}
+
+p {
+  line-height: $leading-relaxed;
+}
+
+// Links
+a {
+  color: $color-primary;
+  text-decoration: none;
+  transition: color $transition-fast;
+  
+  &:hover {
+    color: color.adjust($color-primary, $lightness: -15%);
+  }
+}
+
+// Focus styles
+*:focus {
+  outline: 2px solid $color-primary;
+  outline-offset: 2px;
+}
+
+// Scrollbar styles
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: $color-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $color-gray-400;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $color-gray-500;
+}
+
+// Selection styles
+::selection {
+  background-color: color.adjust($color-primary, $lightness: 40%);
+  color: $color-primary;
+}
+
+// Utility classes
+.text-primary-blue {
+  color: $primary-blue;
+}
+
+.text-secondary-blue {
+  color: $secondary-blue;
+}
+
+.text-primary-green {
+  color: $primary-green;
+}
+
+.text-secondary-green {
+  color: $secondary-green;
+}
+
+.bg-primary-blue {
+  background-color: $primary-blue;
+}
+
+.bg-secondary-blue {
+  background-color: $secondary-blue;
+}
+
+.bg-primary-green {
+  background-color: $primary-green;
+}
+
+.bg-secondary-green {
+  background-color: $secondary-green;
+}
+
+.border-primary-blue {
+  border-color: $primary-blue;
+}
+
+.border-secondary-blue {
+  border-color: $secondary-blue;
+}
+
+.border-primary-green {
+  border-color: $primary-green;
+}
+
+.border-secondary-green {
+  border-color: $secondary-green;
+}
+
+// Responsive typography
+@include mobile-only {
+  h1 {
+    @apply text-3xl;
+  }
+  
+  h2 {
+    @apply text-2xl;
+  }
+  
+  h3 {
+    @apply text-xl;
+  }
+}
+
+// Print styles
+@media print {
+  .nav-full-width,
+  .btn,
+  .loading-container {
+    display: none;
+  }
+  
+  .main-content {
+    @apply max-w-none mx-0 px-0;
+  }
+  
+  .event-card,
+  .booking-card {
+    @apply shadow-none border border-gray-300;
+  }
+}

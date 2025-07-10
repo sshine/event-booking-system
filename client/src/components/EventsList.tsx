@@ -33,7 +33,8 @@ export const EventsList: React.FC<EventsListProps> = ({ onEventSelect, onBookEve
   if (loading) {
     return (
       <div className="loading-container">
-        <div className="loading-spinner">Loading events...</div>
+        <div className="loading-spinner"></div>
+        <span className="loading-text">Loading events...</span>
       </div>
     );
   }
@@ -43,7 +44,7 @@ export const EventsList: React.FC<EventsListProps> = ({ onEventSelect, onBookEve
       <div className="error-container">
         <div className="error-message">{error}</div>
         <button 
-          className="btn btn-primary"
+          className="mt-4 px-4 py-2 text-sm font-medium text-white bg-primary-blue rounded-md hover:bg-opacity-90 transition-colors"
           onClick={() => window.location.reload()}
         >
           Try Again
@@ -55,15 +56,19 @@ export const EventsList: React.FC<EventsListProps> = ({ onEventSelect, onBookEve
   if (events.length === 0) {
     return (
       <div className="empty-state">
-        <h2>No Events Available</h2>
-        <p>There are currently no upcoming events scheduled.</p>
+        <div className="empty-icon">📅</div>
+        <h2 className="empty-title">No Events Available</h2>
+        <p className="empty-description">There are currently no upcoming events scheduled.</p>
       </div>
     );
   }
 
   return (
-    <div className="events-container">
-      <h1>Upcoming Events</h1>
+    <div className="container">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Upcoming Events</h1>
+        <p className="text-gray-600">Discover and book exciting events happening near you</p>
+      </div>
       <div className="events-grid">
         {events.map((event) => (
           <EventCard

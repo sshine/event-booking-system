@@ -4,7 +4,8 @@
       "Bash(mkdir:*)",
       "WebFetch(domain:docs.anthropic.com)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(npm run build:*)"
     ],
     "deny": []
   }

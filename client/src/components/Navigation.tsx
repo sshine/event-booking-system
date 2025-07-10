@@ -19,10 +19,12 @@ export const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChang
   };
 
   return (
-    <nav className="navigation">
+    <nav className="nav-full-width">
       <div className="nav-container">
         <div className="nav-brand">
-          <h1 onClick={() => onViewChange('events')}>EventBooker</h1>
+          <h1 onClick={() => onViewChange('events')} className="cursor-pointer hover:text-secondary-green transition-colors">
+            EventBooker
+          </h1>
         </div>
         
         <div className="nav-links">
@@ -45,22 +47,22 @@ export const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChang
         
         <div className="nav-auth">
           {isAuthenticated ? (
-            <div className="user-menu">
-              <span className="user-name">Welcome, {user?.name}</span>
+            <div className="flex items-center gap-4">
+              <span className="text-sm font-medium text-gray-200">Welcome, {user?.name}</span>
               <button className="btn btn-secondary" onClick={handleLogout}>
                 Logout
               </button>
             </div>
           ) : (
-            <div className="auth-buttons">
+            <div className="flex items-center gap-3">
               <button 
-                className="btn btn-secondary"
+                className="px-4 py-2 text-sm font-medium text-white bg-transparent border border-white rounded-md hover:bg-white hover:text-gray-800 transition-colors"
                 onClick={() => onViewChange('login')}
               >
                 Login
               </button>
               <button 
-                className="btn btn-primary"
+                className="px-4 py-2 text-sm font-medium text-white bg-primary-green rounded-md hover:bg-opacity-90 transition-colors"
                 onClick={() => onViewChange('register')}
               >
                 Register

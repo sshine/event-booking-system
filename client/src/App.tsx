@@ -10,7 +10,6 @@ import { Register } from './components/Register';
 import { MyBookings } from './components/MyBookings';
 import type { Event } from './types';
 import { eventsApi } from './services/api';
-import './App.css';
 
 type ViewType = 'events' | 'event-details' | 'booking-form' | 'booking-confirmation' | 'login' | 'register' | 'bookings';
 

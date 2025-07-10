@@ -30,9 +30,7 @@ body {
 }
 
 .nav-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -590,6 +588,7 @@ body {
   .nav-container {
     flex-direction: column;
     gap: 1rem;
+    padding: 0 1rem;
   }
   
   .nav-links {
