@@ -51,7 +51,7 @@ export const createApp = () => {
 const app = createApp();
 
 // Only start server if this file is run directly (not imported)
-if (require.main === module || process.env.NODE_ENV !== 'test') {
+if (import.meta.url === `file://${process.argv[1]}` || process.env.NODE_ENV !== 'test') {
   const PORT = process.env.PORT || 3001;
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
