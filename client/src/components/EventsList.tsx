@@ -65,8 +65,8 @@ export const EventsList: React.FC<EventsListProps> = ({ onEventSelect, onBookEve
 
   return (
     <div className="container">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Upcoming Events</h1>
+      <div className="mb-8 text-center">
+        <h1 className="text-3xl font-bold mb-2 sparkly-gradient-text">Upcoming Events</h1>
         <p className="text-gray-600">Discover and book exciting events happening near you</p>
       </div>
       <div className="events-grid">

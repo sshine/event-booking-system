@@ -56,13 +56,13 @@ export const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChang
           ) : (
             <div className="flex items-center gap-3">
               <button
-                className="px-4 py-2 text-sm font-medium text-white bg-transparent border border-white rounded-md hover:bg-white hover:text-gray-800 transition-colors"
+                className={`nav-link ${currentView === 'login' ? 'active' : ''}`}
                 onClick={() => onViewChange('login')}
               >
                 Login
               </button>
               <button
-                className="px-4 py-2 text-sm font-medium text-white bg-primary-green rounded-md hover:bg-opacity-90 transition-colors"
+                className={`nav-link ${currentView === 'register' ? 'active' : ''}`}
                 onClick={() => onViewChange('register')}
               >
                 Register

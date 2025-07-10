@@ -56,7 +56,7 @@
     }
 
     &.active {
-      background-color: $color-primary;
+      background-color: $color-secondary;
       color: $color-white;
     }
   }
@@ -113,6 +113,7 @@
 // New redesigned event card
 .event-card-redesign {
   @apply bg-white rounded-lg shadow-lg overflow-hidden transition-transform duration-200 hover:scale-105 hover:shadow-xl;
+  border: 1px solid $gray-light;
 
   .event-image {
     @apply w-full h-48 object-cover;
@@ -138,7 +139,8 @@
     @apply flex items-center gap-2;
 
     .current-price {
-      @apply text-xl font-bold text-blue-600;
+      @apply text-xl font-bold;
+      color: $color-primary;
     }
 
     .original-price {
@@ -158,10 +160,16 @@
     @apply w-full px-4 py-2 text-sm font-medium rounded-md transition-colors;
 
     &:not(:disabled) {
-      @apply bg-blue-600 text-white hover:bg-blue-700;
+      @apply text-white;
+      background-color: $color-primary;
+
+      &:hover {
+        background-color: darken($color-primary, 10%);
+      }
     }
 
-    &:disabled {
+    &:disabled,
+    &.disabled {
       @apply bg-gray-300 text-gray-500 cursor-not-allowed;
     }
   }
@@ -410,5 +418,54 @@
   to {
     transform: translateY(0);
     opacity: 1;
+  }
+}
+
+@keyframes sparkly-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+// Sparkly gradient text effect
+.sparkly-gradient-text {
+  background: linear-gradient(
+    45deg,
+    $color-primary,
+    $color-success,
+    $color-secondary,
+    $color-accent,
+    $color-primary
+  );
+  background-size: 300% 300%;
+  background-clip: text !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  animation: sparkly-gradient 3s ease-in-out infinite;
+  font-weight: 800 !important;
+
+  // Add a subtle glow effect using box-shadow on the element instead of text-shadow
+  position: relative;
+  display: inline-block;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: inherit;
+    background-size: inherit;
+    animation: inherit;
+    filter: blur(10px);
+    opacity: 0.3;
+    z-index: -1;
   }
 }

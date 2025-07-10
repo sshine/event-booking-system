@@ -1,4 +1,5 @@
 import React from 'react';
+import { HiMapPin, HiClock } from 'react-icons/hi2';
 import type { Event } from '../types';
 
 interface EventCardProps {
@@ -42,12 +43,12 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onViewDetails, onBo
       className="event-card-redesign cursor-pointer"
       onClick={handleCardClick}
     >
-      <div className="relative">
+      <div className="relative overflow-hidden">
         {event.image_url && (
           <img
             src={event.image_url}
             alt={event.title}
-            className="w-full h-48 object-cover rounded-t-lg"
+            className="w-full h-48 object-cover"
           />
         )}
 
@@ -60,31 +61,29 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onViewDetails, onBo
         </div>
       </div>
 
-      <div className="p-4">
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">{event.title}</h3>
+      <div className="event-content">
+        <h3 className="event-title">{event.title}</h3>
 
-        <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
-          <span>📍</span>
-          <span>{event.location}</span>
-        </div>
+        <div className="event-meta">
+          <div className="event-detail">
+            <HiMapPin className="w-4 h-4" />
+            <span>{event.location}</span>
+          </div>
 
-        <div className="flex items-center gap-2 text-sm text-gray-600 mb-4">
-          <span>⏰</span>
-          <span>{calculateTimeLeft()}</span>
-        </div>
-
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <span className="text-xl font-bold text-blue-600">${event.price.toFixed(0)}</span>
-            <span className="text-sm text-gray-500 line-through">${originalPrice.toFixed(0)}</span>
+          <div className="event-detail">
+            <HiClock className="w-4 h-4" />
+            <span>{calculateTimeLeft()}</span>
           </div>
         </div>
 
+        <div className="event-price mb-4">
+          <span className="current-price">${event.price.toFixed(0)}</span>
+          <span className="original-price">${originalPrice.toFixed(0)}</span>
+        </div>
+
         <button
-          className={`w-full px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-            event.is_full
-              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-              : 'bg-blue-600 text-white hover:bg-blue-700'
+          className={`get-tickets-btn ${
+            event.is_full ? 'disabled' : ''
           }`}
           onClick={(e) => {
             e.stopPropagation();
