@@ -9,6 +9,7 @@ interface SampleEvent {
   location: string;
   capacity: number;
   price: number;
+  image_url?: string;
   created_by: number;
 }
 
@@ -22,6 +23,7 @@ const sampleEvents: SampleEvent[] = [
     location: "Arts & Crafts Studio, Room 201",
     capacity: 12,
     price: 35.00,
+    image_url: "/dummy-event-thumbnail.jpg",
     created_by: 1
   },
   {
@@ -33,6 +35,7 @@ const sampleEvents: SampleEvent[] = [
     location: "Jewelry Workshop, Ground Floor",
     capacity: 8,
     price: 42.50,
+    image_url: "/dummy-event-thumbnail.jpg",
     created_by: 1
   },
   {
@@ -44,6 +47,7 @@ const sampleEvents: SampleEvent[] = [
     location: "Community Kitchen, Building B",
     capacity: 20,
     price: 15.00,
+    image_url: "/dummy-event-thumbnail.jpg",
     created_by: 1
   },
   {
@@ -55,6 +59,7 @@ const sampleEvents: SampleEvent[] = [
     location: "The Blue Note Lounge",
     capacity: 45,
     price: 28.00,
+    image_url: "/dummy-event-thumbnail.jpg",
     created_by: 1
   },
   {
@@ -66,6 +71,7 @@ const sampleEvents: SampleEvent[] = [
     location: "Zen Garden Pavilion",
     capacity: 10,
     price: 38.00,
+    image_url: "/dummy-event-thumbnail.jpg",
     created_by: 1
   }
 ];
@@ -98,8 +104,8 @@ async function seedEvents(): Promise<void> {
     const insertPromises = sampleEvents.map((event) => {
       return new Promise<void>((resolve, reject) => {
         const query = `
-          INSERT INTO events (title, description, date, start_time, end_time, location, capacity, price, created_by)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+          INSERT INTO events (title, description, date, start_time, end_time, location, capacity, price, image_url, created_by)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
         db.run(query, [
@@ -111,6 +117,7 @@ async function seedEvents(): Promise<void> {
           event.location,
           event.capacity,
           event.price,
+          event.image_url,
           event.created_by
         ], function(err) {
           if (err) {
