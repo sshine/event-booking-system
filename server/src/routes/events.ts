@@ -1,7 +1,7 @@
 import express from 'express';
 import { body, validationResult } from 'express-validator';
 import { database } from '../models/database';
-import { CreateEventRequest, Event, EventWithAvailability } from '../types';
+import { CreateEventRequest, EventWithAvailability } from '../types';
 import { authenticateToken, requireAdmin, AuthenticatedRequest } from '../middleware/auth';
 
 const router = express.Router();

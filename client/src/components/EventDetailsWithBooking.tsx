@@ -327,7 +327,7 @@ export const EventDetailsWithBooking: React.FC<EventDetailsWithBookingProps> = (
                 {authState === 'register-needed' && (
                   <>
                     <div className="auth-info">
-                      <p>Looks like you're new here! Let's create your account:</p>
+                      <p>Looks like you&apos;re new here! Let&apos;s create your account:</p>
                     </div>
                     <div className="form-group">
                       <label htmlFor="attendee_name">Your Name</label>

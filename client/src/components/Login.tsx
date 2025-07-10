@@ -87,7 +87,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSwitchToRegister
         </form>
 
         <div className="auth-switch">
-          <p>Don't have an account?</p>
+          <p>Don&apos;t have an account?</p>
           <button
             type="button"
             className="btn btn-link"

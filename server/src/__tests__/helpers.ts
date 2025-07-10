@@ -2,7 +2,7 @@ import request from 'supertest';
 import bcrypt from 'bcryptjs';
 import { createApp } from '../index';
 import { database } from '../models/database';
-import { CreateUserRequest, CreateEventRequest, CreateBookingRequest } from '../types';
+// Types are used implicitly through the function parameters
 
 // Create a fresh app instance for each test
 const getApp = () => createApp();

@@ -1,7 +1,7 @@
 import express from 'express';
 import { body, validationResult } from 'express-validator';
 import { database } from '../models/database';
-import { CreateBookingRequest, Booking } from '../types';
+import { CreateBookingRequest } from '../types';
 import { authenticateToken, AuthenticatedRequest } from '../middleware/auth';
 
 const router = express.Router();
@@ -10,7 +10,7 @@ const validateBooking = [
   body('event_id').isInt({ min: 1 }),
   body('attendee_name').isLength({ min: 1 }).trim().escape(),
   body('attendee_email').isEmail().normalizeEmail(),
-  body('attendee_phone').optional().matches(/^\+?[\d\s\-\(\)]+$/),
+  body('attendee_phone').optional().matches(/^\+?[\d\s\-()]+$/),
   body('quantity').optional().isInt({ min: 1, max: 10 }),
 ];
 

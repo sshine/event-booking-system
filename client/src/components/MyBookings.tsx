@@ -90,7 +90,7 @@ export const MyBookings: React.FC<MyBookingsProps> = ({ onViewEvent }) => {
     return (
       <div className="empty-state">
         <h2>No Bookings Yet</h2>
-        <p>You haven't booked any events yet. Browse our events to get started!</p>
+        <p>You haven&apos;t booked any events yet. Browse our events to get started!</p>
         <button
           className="btn btn-primary"
           onClick={() => onViewEvent(0)}

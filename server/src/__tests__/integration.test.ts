@@ -39,7 +39,7 @@ describe('Integration Tests', () => {
       // 1. Create admin and regular user
       const { token: adminToken } = await createAdminInDb();
       const userData = createTestUser();
-      const { user, token: userToken } = await createUserInDb(userData);
+      const { token: userToken } = await createUserInDb(userData);
 
       // 2. Admin creates an event
       const eventData = createTestEvent({

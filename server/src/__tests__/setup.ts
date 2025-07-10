@@ -13,7 +13,7 @@ process.env.JWT_SECRET = 'test-jwt-secret-key-for-testing-only';
 let testDb: any;
 
 export const setupTestDatabase = async (): Promise<void> => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     // Initialize test database in memory
     testDb = database.getDb();
 

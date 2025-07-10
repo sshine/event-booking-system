@@ -39,7 +39,7 @@ export const createApp = () => {
     res.status(404).json({ error: 'Route not found' });
   });
 
-  app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  app.use((err: any, req: express.Request, res: express.Response) => {
     console.error('Unhandled error:', err);
     res.status(500).json({ error: 'Internal server error' });
   });

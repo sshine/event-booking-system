@@ -75,9 +75,9 @@ export class Database {
     // Add quantity column to existing bookings table if it doesn't exist
     this.db.run(`
       PRAGMA table_info(bookings)
-    `, (err: any, rows: any) => {
+    `, (err: unknown) => {
       if (!err) {
-        this.db.all(`PRAGMA table_info(bookings)`, (err: any, columns: any[]) => {
+        this.db.all(`PRAGMA table_info(bookings)`, (err: unknown, columns: any[]) => {
           if (!err && columns) {
             const hasQuantityColumn = columns.some(col => col.name === 'quantity');
             if (!hasQuantityColumn) {

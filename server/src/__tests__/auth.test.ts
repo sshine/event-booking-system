@@ -2,9 +2,7 @@ import request from 'supertest';
 import { createApp } from '../index';
 import {
   createTestUser,
-  createTestAdmin,
   registerUser,
-  loginUser,
   expectError,
   expectValidationError,
   expectSuccessResponse,
