@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { HiMapPin, HiClock, HiCalendar } from 'react-icons/hi2';
 import type { Event } from '../types';
 import { eventsApi, authApi, bookingsApi } from '../services/api';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 
 interface EventDetailsWithBookingProps {
   eventId: number;

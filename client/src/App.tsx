@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AuthProvider } from './contexts/AuthContext';
+import { AuthProvider } from './components/AuthProvider';
 import { Navigation } from './components/Navigation';
 import { EventsList } from './components/EventsList';
 import { EventDetailsWithBooking } from './components/EventDetailsWithBooking';
