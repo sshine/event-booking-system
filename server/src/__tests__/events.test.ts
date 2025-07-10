@@ -25,13 +25,13 @@ describe('Events API', () => {
 
     it('should return list of upcoming events', async () => {
       const { token: adminToken } = await createAdminInDb();
-      
+
       // Create a future event
       const eventData = createTestEvent({
         date: '2025-12-25',
         title: 'Christmas Workshop'
       });
-      
+
       await createEventInDb(eventData, adminToken);
 
       const response = await request(getApp())
@@ -46,13 +46,13 @@ describe('Events API', () => {
 
     it('should not return past events', async () => {
       const { token: adminToken } = await createAdminInDb();
-      
+
       // Create a past event
       const pastEvent = createTestEvent({
         date: '2020-01-01',
         title: 'Past Event'
       });
-      
+
       await request(getApp())
         .post('/api/events')
         .set('Authorization', `Bearer ${adminToken}`)
@@ -67,19 +67,19 @@ describe('Events API', () => {
 
     it('should return events sorted by date and time', async () => {
       const { token: adminToken } = await createAdminInDb();
-      
+
       const event1 = createTestEvent({
         date: '2025-12-25',
         start_time: '14:00',
         title: 'Event 1'
       });
-      
+
       const event2 = createTestEvent({
         date: '2025-12-24',
         start_time: '10:00',
         title: 'Event 2'
       });
-      
+
       const event3 = createTestEvent({
         date: '2025-12-25',
         start_time: '10:00',
@@ -128,7 +128,8 @@ describe('Events API', () => {
       const response = await request(getApp())
         .get('/api/events/invalid');
 
-      expect(response.status).toBe(500); // parseInt returns NaN, causing database error
+      expect(response.status).toBe(400);
+      expect(response.body.error).toBe('Invalid event ID');
     });
   });
 
@@ -182,7 +183,7 @@ describe('Events API', () => {
 
     it('should validate field formats', async () => {
       const { token: adminToken } = await createAdminInDb();
-      
+
       const invalidEventData = {
         title: '', // empty title
         description: 'Valid description',
@@ -241,7 +242,7 @@ describe('Events API', () => {
     it('should not update event without admin credentials', async () => {
       const { token: adminToken } = await createAdminInDb();
       const { token: userToken } = await createUserInDb(createTestUser());
-      
+
       const eventData = createTestEvent();
       const event = await createEventInDb(eventData, adminToken);
 
@@ -302,14 +303,14 @@ describe('Events API', () => {
       // Verify event is deleted
       const getResponse = await request(getApp())
         .get(`/api/events/${event.id}`);
-      
+
       expectError(getResponse, 404);
     });
 
     it('should not delete event without admin credentials', async () => {
       const { token: adminToken } = await createAdminInDb();
       const { token: userToken } = await createUserInDb(createTestUser());
-      
+
       const eventData = createTestEvent();
       const event = await createEventInDb(eventData, adminToken);
 
@@ -346,14 +347,14 @@ describe('Events API', () => {
     it('should calculate available spots correctly', async () => {
       const { token: adminToken } = await createAdminInDb();
       const { token: userToken } = await createUserInDb(createTestUser());
-      
+
       const eventData = createTestEvent({ capacity: 3 });
       const event = await createEventInDb(eventData, adminToken);
 
       // Check initial availability
       const initialResponse = await request(getApp())
         .get(`/api/events/${event.id}`);
-      
+
       expect(initialResponse.body.available_spots).toBe(3);
       expect(initialResponse.body.is_full).toBe(false);
 
@@ -370,7 +371,7 @@ describe('Events API', () => {
       // Check updated availability
       const updatedResponse = await request(getApp())
         .get(`/api/events/${event.id}`);
-      
+
       expect(updatedResponse.body.available_spots).toBe(2);
       expect(updatedResponse.body.is_full).toBe(false);
     });

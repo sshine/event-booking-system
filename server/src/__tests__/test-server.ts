@@ -8,7 +8,7 @@ let testPort: number | null = null;
 export const startTestServer = async (): Promise<{ server: Server; port: number }> => {
   return new Promise((resolve, reject) => {
     const app = createApp();
-    
+
     // Use port 0 to get a random available port
     testServer = app.listen(0, () => {
       const address = testServer!.address() as AddressInfo;

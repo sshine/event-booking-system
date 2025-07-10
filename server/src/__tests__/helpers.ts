@@ -37,7 +37,7 @@ export interface TestBooking {
   attendee_phone?: string;
 }
 
-// Test data factories
+// Test data factorie
 export const createTestUser = (overrides: Partial<TestUser> = {}): TestUser => ({
   email: 'test@example.com',
   password: 'password123',
@@ -74,7 +74,7 @@ export const createTestBooking = (overrides: Partial<TestBooking> = {}): TestBoo
   ...overrides,
 });
 
-// Authentication helpers
+// Authentication helper
 export const registerUser = async (userData: TestUser): Promise<{ user: any; token: string }> => {
   const app = getApp();
   const response = await request(app)
@@ -84,10 +84,10 @@ export const registerUser = async (userData: TestUser): Promise<{ user: any; tok
       password: userData.password,
       name: userData.name,
     });
-  
+
   expect(response.status).toBe(201);
   expect(response.body.token).toBeDefined();
-  
+
   return {
     user: response.body.user,
     token: response.body.token,
@@ -99,35 +99,35 @@ export const loginUser = async (email: string, password: string): Promise<{ user
   const response = await request(app)
     .post('/api/auth/login')
     .send({ email, password });
-  
+
   expect(response.status).toBe(200);
   expect(response.body.token).toBeDefined();
-  
+
   return {
     user: response.body.user,
     token: response.body.token,
   };
 };
 
-// Database helpers
+// Database helper
 export const createUserInDb = async (userData: TestUser): Promise<{ user: any; token: string }> => {
   return registerUser(userData);
 };
 
 export const createAdminInDb = async (): Promise<{ user: any; token: string }> => {
   const db = database.getDb();
-  
+
   // First create the admin user directly in the database
   return new Promise((resolve, reject) => {
     const adminData = createTestAdmin();
     const bcrypt = require('bcryptjs');
-    
+
     bcrypt.hash(adminData.password, 10, (err: any, hashedPassword: string) => {
       if (err) {
         reject(err);
         return;
       }
-      
+
       db.run(
         `INSERT INTO users (email, password, name, role) VALUES (?, ?, ?, 'admin')`,
         [adminData.email, hashedPassword, adminData.name],
@@ -136,7 +136,7 @@ export const createAdminInDb = async (): Promise<{ user: any; token: string }> =
             reject(err);
             return;
           }
-          
+
           try {
             const { user, token } = await loginUser(adminData.email, adminData.password);
             resolve({ user, token });
@@ -155,9 +155,9 @@ export const createEventInDb = async (eventData: TestEvent, adminToken: string):
     .post('/api/events')
     .set('Authorization', `Bearer ${adminToken}`)
     .send(eventData);
-  
+
   expect(response.status).toBe(201);
-  
+
   return {
     id: response.body.eventId,
     ...eventData,
@@ -170,16 +170,16 @@ export const createBookingInDb = async (bookingData: TestBooking, userToken: str
     .post('/api/bookings')
     .set('Authorization', `Bearer ${userToken}`)
     .send(bookingData);
-  
+
   expect(response.status).toBe(201);
-  
+
   return {
     id: response.body.bookingId,
     ...bookingData,
   };
 };
 
-// Utility functions
+// Utility function
 export const expectError = (response: any, status: number, errorMessage?: string) => {
   expect(response.status).toBe(status);
   expect(response.body.error).toBeDefined();

@@ -27,31 +27,31 @@ router.post('/register', validateRegister, async (req: express.Request, res: exp
 
     const { email, password, name }: CreateUserRequest = req.body;
     const db = database.getDb();
-    
+
     db.get('SELECT id FROM users WHERE email = ?', [email], async (err: any, existingUser: any) => {
       if (err) {
         console.error('Database error:', err);
         return res.status(500).json({ error: 'Database error' });
       }
-      
+
       if (existingUser) {
         return res.status(400).json({ error: 'Email already registered' });
       }
-      
+
       try {
         const hashedPassword = await hashPassword(password);
-        
+
         const insertQuery = `
           INSERT INTO users (email, password, name, role)
           VALUES (?, ?, ?, 'user')
         `;
-        
+
         db.run(insertQuery, [email, hashedPassword, name], function(err: any) {
           if (err) {
             console.error('Database error:', err);
             return res.status(500).json({ error: 'Failed to create user' });
           }
-          
+
           const newUser = {
             id: this.lastID,
             email,
@@ -59,9 +59,9 @@ router.post('/register', validateRegister, async (req: express.Request, res: exp
             role: 'user' as const,
             created_at: new Date().toISOString()
           };
-          
+
           const token = generateToken(newUser);
-          
+
           res.status(201).json({
             message: 'User registered successfully',
             user: newUser,
@@ -88,24 +88,24 @@ router.post('/login', validateLogin, async (req: express.Request, res: express.R
 
     const { email, password }: LoginRequest = req.body;
     const db = database.getDb();
-    
+
     db.get('SELECT * FROM users WHERE email = ?', [email], async (err: any, user: User) => {
       if (err) {
         console.error('Database error:', err);
         return res.status(500).json({ error: 'Database error' });
       }
-      
+
       if (!user) {
         return res.status(401).json({ error: 'Invalid credentials' });
       }
-      
+
       try {
         const isValidPassword = await comparePassword(password, user.password);
-        
+
         if (!isValidPassword) {
           return res.status(401).json({ error: 'Invalid credentials' });
         }
-        
+
         const userWithoutPassword = {
           id: user.id,
           email: user.email,
@@ -113,9 +113,9 @@ router.post('/login', validateLogin, async (req: express.Request, res: express.R
           role: user.role,
           created_at: user.created_at
         };
-        
+
         const token = generateToken(userWithoutPassword);
-        
+
         res.json({
           message: 'Login successful',
           user: userWithoutPassword,
@@ -135,17 +135,17 @@ router.post('/login', validateLogin, async (req: express.Request, res: express.R
 router.get('/me', authenticateToken, async (req: AuthenticatedRequest, res) => {
   try {
     const db = database.getDb();
-    
+
     db.get('SELECT id, email, name, role, created_at FROM users WHERE id = ?', [req.user!.id], (err: any, user: any) => {
       if (err) {
         console.error('Database error:', err);
         return res.status(500).json({ error: 'Database error' });
       }
-      
+
       if (!user) {
         return res.status(404).json({ error: 'User not found' });
       }
-      
+
       res.json({ user });
     });
   } catch (error) {

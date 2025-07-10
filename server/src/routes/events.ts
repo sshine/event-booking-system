@@ -9,7 +9,7 @@ const router = express.Router();
 const validateEvent = [
   body('title').isLength({ min: 1 }).trim().escape(),
   body('description').optional().trim().escape(),
-  body('date').isISO8601().toDate(),
+  body('date').isISO8601(),
   body('start_time').matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/),
   body('end_time').matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/),
   body('location').isLength({ min: 1 }).trim().escape(),
@@ -21,9 +21,9 @@ const validateEvent = [
 router.get('/', async (req: express.Request, res: express.Response) => {
   try {
     const db = database.getDb();
-    
+
     const query = `
-      SELECT 
+      SELECT
         e.*,
         COALESCE(e.capacity - COUNT(b.id), e.capacity) as available_spots,
         CASE WHEN COUNT(b.id) >= e.capacity THEN 1 ELSE 0 END as is_full
@@ -39,12 +39,12 @@ router.get('/', async (req: express.Request, res: express.Response) => {
         console.error('Database error:', err);
         return res.status(500).json({ error: 'Failed to fetch events' });
       }
-      
+
       const events = rows.map(event => ({
         ...event,
         is_full: Boolean(event.is_full)
       }));
-      
+
       res.json(events);
     });
   } catch (error) {
@@ -56,10 +56,15 @@ router.get('/', async (req: express.Request, res: express.Response) => {
 router.get('/:id', async (req: express.Request, res: express.Response) => {
   try {
     const eventId = parseInt(req.params.id!);
+
+    if (isNaN(eventId)) {
+      return res.status(400).json({ error: 'Invalid event ID' });
+    }
+
     const db = database.getDb();
-    
+
     const query = `
-      SELECT 
+      SELECT
         e.*,
         COALESCE(e.capacity - COUNT(b.id), e.capacity) as available_spots,
         CASE WHEN COUNT(b.id) >= e.capacity THEN 1 ELSE 0 END as is_full
@@ -74,16 +79,16 @@ router.get('/:id', async (req: express.Request, res: express.Response) => {
         console.error('Database error:', err);
         return res.status(500).json({ error: 'Failed to fetch event' });
       }
-      
+
       if (!row) {
         return res.status(404).json({ error: 'Event not found' });
       }
-      
+
       const event = {
         ...row,
         is_full: Boolean(row.is_full)
       };
-      
+
       res.json(event);
     });
   } catch (error) {
@@ -101,7 +106,7 @@ router.post('/', authenticateToken, requireAdmin, validateEvent, async (req: Aut
 
     const eventData: CreateEventRequest = req.body;
     const db = database.getDb();
-    
+
     const query = `
       INSERT INTO events (title, description, date, start_time, end_time, location, capacity, price, image_url, created_by)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -126,7 +131,7 @@ router.post('/', authenticateToken, requireAdmin, validateEvent, async (req: Aut
           console.error('Database error:', err);
           return res.status(500).json({ error: 'Failed to create event' });
         }
-        
+
         res.status(201).json({
           message: 'Event created successfully',
           eventId: this.lastID
@@ -149,10 +154,10 @@ router.put('/:id', authenticateToken, requireAdmin, validateEvent, async (req: A
     const eventId = parseInt(req.params.id!);
     const eventData: CreateEventRequest = req.body;
     const db = database.getDb();
-    
+
     const query = `
-      UPDATE events 
-      SET title = ?, description = ?, date = ?, start_time = ?, end_time = ?, 
+      UPDATE event
+      SET title = ?, description = ?, date = ?, start_time = ?, end_time = ?,
           location = ?, capacity = ?, price = ?, image_url = ?
       WHERE id = ?
     `;
@@ -176,11 +181,11 @@ router.put('/:id', authenticateToken, requireAdmin, validateEvent, async (req: A
           console.error('Database error:', err);
           return res.status(500).json({ error: 'Failed to update event' });
         }
-        
+
         if (this.changes === 0) {
           return res.status(404).json({ error: 'Event not found' });
         }
-        
+
         res.json({ message: 'Event updated successfully' });
       }
     );
@@ -194,17 +199,17 @@ router.delete('/:id', authenticateToken, requireAdmin, async (req: Authenticated
   try {
     const eventId = parseInt(req.params.id!);
     const db = database.getDb();
-    
+
     db.run('DELETE FROM events WHERE id = ?', [eventId], function(err: any) {
       if (err) {
         console.error('Database error:', err);
         return res.status(500).json({ error: 'Failed to delete event' });
       }
-      
+
       if (this.changes === 0) {
         return res.status(404).json({ error: 'Event not found' });
       }
-      
+
       res.json({ message: 'Event deleted successfully' });
     });
   } catch (error) {

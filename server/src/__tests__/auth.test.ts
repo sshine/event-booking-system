@@ -252,8 +252,8 @@ describe('Authentication API', () => {
       // Token should be a valid JWT (3 parts separated by dots)
       const tokenParts = token.split('.');
       expect(tokenParts).toHaveLength(3);
-      
-      // Should be able to use token for authenticated requests
+
+      // Should be able to use token for authenticated request
       const response = await request(getApp())
         .get('/api/auth/me')
         .set('Authorization', `Bearer ${token}`);

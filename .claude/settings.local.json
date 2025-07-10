@@ -6,8 +6,12 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(npm run build:*)",
+      "Bash(npm run typecheck:*)",
       "Bash(sqlite3:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(timeout 5 npm run dev)",
+      "Bash(true)",
+      "Bash(npm test:*)"
     ],
     "deny": []
   }

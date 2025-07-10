@@ -10,15 +10,15 @@ const validateBooking = [
   body('event_id').isInt({ min: 1 }),
   body('attendee_name').isLength({ min: 1 }).trim().escape(),
   body('attendee_email').isEmail().normalizeEmail(),
-  body('attendee_phone').optional().isMobilePhone('any'),
+  body('attendee_phone').optional().matches(/^\+?[\d\s\-\(\)]+$/),
 ];
 
 router.get('/', authenticateToken, async (req: AuthenticatedRequest, res: express.Response) => {
   try {
     const db = database.getDb();
-    
+
     const query = `
-      SELECT 
+      SELECT
         b.*,
         e.title as event_title,
         e.date as event_date,
@@ -35,7 +35,7 @@ router.get('/', authenticateToken, async (req: AuthenticatedRequest, res: expres
         console.error('Database error:', err);
         return res.status(500).json({ error: 'Failed to fetch bookings' });
       }
-      
+
       res.json(rows);
     });
   } catch (error) {
@@ -48,9 +48,9 @@ router.get('/:id', authenticateToken, async (req: AuthenticatedRequest, res: exp
   try {
     const bookingId = parseInt(req.params.id!);
     const db = database.getDb();
-    
+
     const query = `
-      SELECT 
+      SELECT
         b.*,
         e.title as event_title,
         e.date as event_date,
@@ -68,11 +68,11 @@ router.get('/:id', authenticateToken, async (req: AuthenticatedRequest, res: exp
         console.error('Database error:', err);
         return res.status(500).json({ error: 'Failed to fetch booking' });
       }
-      
+
       if (!row) {
         return res.status(404).json({ error: 'Booking not found' });
       }
-      
+
       res.json(row);
     });
   } catch (error) {
@@ -90,7 +90,7 @@ router.post('/', authenticateToken, validateBooking, async (req: AuthenticatedRe
 
     const bookingData: CreateBookingRequest = req.body;
     const db = database.getDb();
-    
+
     db.serialize(() => {
       db.get(
         'SELECT * FROM events WHERE id = ? AND date >= date("now")',
@@ -100,11 +100,11 @@ router.post('/', authenticateToken, validateBooking, async (req: AuthenticatedRe
             console.error('Database error:', err);
             return res.status(500).json({ error: 'Failed to validate event' });
           }
-          
+
           if (!event) {
             return res.status(404).json({ error: 'Event not found or has already passed' });
           }
-          
+
           db.get(
             'SELECT COUNT(*) as booking_count FROM bookings WHERE event_id = ? AND status = "confirmed"',
             [bookingData.event_id],
@@ -113,12 +113,12 @@ router.post('/', authenticateToken, validateBooking, async (req: AuthenticatedRe
                 console.error('Database error:', err);
                 return res.status(500).json({ error: 'Failed to check event capacity' });
               }
-              
+
               const eventCapacity = (event as any).capacity;
               if (result.booking_count >= eventCapacity) {
                 return res.status(400).json({ error: 'Event is fully booked' });
               }
-              
+
               db.get(
                 'SELECT id FROM bookings WHERE event_id = ? AND user_id = ?',
                 [bookingData.event_id, req.user!.id],
@@ -127,16 +127,16 @@ router.post('/', authenticateToken, validateBooking, async (req: AuthenticatedRe
                     console.error('Database error:', err);
                     return res.status(500).json({ error: 'Failed to check existing booking' });
                   }
-                  
+
                   if (existingBooking) {
                     return res.status(400).json({ error: 'You have already booked this event' });
                   }
-                  
+
                   const insertQuery = `
                     INSERT INTO bookings (event_id, user_id, attendee_name, attendee_email, attendee_phone)
                     VALUES (?, ?, ?, ?, ?)
                   `;
-                  
+
                   db.run(
                     insertQuery,
                     [
@@ -151,7 +151,7 @@ router.post('/', authenticateToken, validateBooking, async (req: AuthenticatedRe
                         console.error('Database error:', err);
                         return res.status(500).json({ error: 'Failed to create booking' });
                       }
-                      
+
                       res.status(201).json({
                         message: 'Booking created successfully',
                         bookingId: this.lastID
@@ -175,7 +175,7 @@ router.put('/:id/cancel', authenticateToken, async (req: AuthenticatedRequest, r
   try {
     const bookingId = parseInt(req.params.id!);
     const db = database.getDb();
-    
+
     db.serialize(() => {
       db.get(
         'SELECT * FROM bookings WHERE id = ? AND user_id = ?',
@@ -185,15 +185,15 @@ router.put('/:id/cancel', authenticateToken, async (req: AuthenticatedRequest, r
             console.error('Database error:', err);
             return res.status(500).json({ error: 'Failed to fetch booking' });
           }
-          
+
           if (!booking) {
             return res.status(404).json({ error: 'Booking not found' });
           }
-          
+
           if ((booking as any).status === 'cancelled') {
             return res.status(400).json({ error: 'Booking is already cancelled' });
           }
-          
+
           db.run(
             'UPDATE bookings SET status = "cancelled" WHERE id = ?',
             [bookingId],
@@ -202,7 +202,7 @@ router.put('/:id/cancel', authenticateToken, async (req: AuthenticatedRequest, r
                 console.error('Database error:', err);
                 return res.status(500).json({ error: 'Failed to cancel booking' });
               }
-              
+
               res.json({ message: 'Booking cancelled successfully' });
             }
           );
@@ -219,13 +219,13 @@ router.get('/event/:eventId', authenticateToken, async (req: AuthenticatedReques
   try {
     const eventId = parseInt(req.params.eventId!);
     const db = database.getDb();
-    
+
     if (req.user!.role !== 'admin') {
       return res.status(403).json({ error: 'Admin access required' });
     }
-    
+
     const query = `
-      SELECT 
+      SELECT
         b.*,
         u.name as user_name,
         u.email as user_email
@@ -240,7 +240,7 @@ router.get('/event/:eventId', authenticateToken, async (req: AuthenticatedReques
         console.error('Database error:', err);
         return res.status(500).json({ error: 'Failed to fetch event bookings' });
       }
-      
+
       res.json(rows);
     });
   } catch (error) {

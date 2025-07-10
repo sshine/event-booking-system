@@ -31,10 +31,10 @@ describe('Bookings API', () => {
     it('should return user bookings with event details', async () => {
       const { token: adminToken } = await createAdminInDb();
       const { token: userToken } = await createUserInDb(createTestUser());
-      
+
       const eventData = createTestEvent();
       const event = await createEventInDb(eventData, adminToken);
-      
+
       const bookingData = createTestBooking({ event_id: event.id });
       await createBookingInDb(bookingData, userToken);
 
@@ -55,10 +55,10 @@ describe('Bookings API', () => {
       const { token: adminToken } = await createAdminInDb();
       const { token: user1Token } = await createUserInDb(createTestUser({ email: 'user1@example.com' }));
       const { token: user2Token } = await createUserInDb(createTestUser({ email: 'user2@example.com' }));
-      
+
       const eventData = createTestEvent();
       const event = await createEventInDb(eventData, adminToken);
-      
+
       // Create booking for user1
       await createBookingInDb(createTestBooking({ event_id: event.id }), user1Token);
 
@@ -83,10 +83,10 @@ describe('Bookings API', () => {
     it('should return specific booking by ID', async () => {
       const { token: adminToken } = await createAdminInDb();
       const { token: userToken } = await createUserInDb(createTestUser());
-      
+
       const eventData = createTestEvent();
       const event = await createEventInDb(eventData, adminToken);
-      
+
       const bookingData = createTestBooking({ event_id: event.id });
       const booking = await createBookingInDb(bookingData, userToken);
 
@@ -105,10 +105,10 @@ describe('Bookings API', () => {
       const { token: adminToken } = await createAdminInDb();
       const { token: user1Token } = await createUserInDb(createTestUser({ email: 'user1@example.com' }));
       const { token: user2Token } = await createUserInDb(createTestUser({ email: 'user2@example.com' }));
-      
+
       const eventData = createTestEvent();
       const event = await createEventInDb(eventData, adminToken);
-      
+
       const bookingData = createTestBooking({ event_id: event.id });
       const booking = await createBookingInDb(bookingData, user1Token);
 
@@ -134,10 +134,10 @@ describe('Bookings API', () => {
     it('should create booking successfully for valid event', async () => {
       const { token: adminToken } = await createAdminInDb();
       const { token: userToken } = await createUserInDb(createTestUser());
-      
+
       const eventData = createTestEvent();
       const event = await createEventInDb(eventData, adminToken);
-      
+
       const bookingData = createTestBooking({ event_id: event.id });
 
       const response = await request(getApp())
@@ -152,7 +152,7 @@ describe('Bookings API', () => {
 
     it('should not create booking for non-existent event', async () => {
       const { token: userToken } = await createUserInDb(createTestUser());
-      
+
       const bookingData = createTestBooking({ event_id: 999 });
 
       const response = await request(getApp())
@@ -166,15 +166,15 @@ describe('Bookings API', () => {
     it('should not create booking for past event', async () => {
       const { token: adminToken } = await createAdminInDb();
       const { token: userToken } = await createUserInDb(createTestUser());
-      
+
       // Create past event directly in database
       const pastEventData = createTestEvent({ date: '2020-01-01' });
-      
+
       const createPastEventResponse = await request(getApp())
         .post('/api/events')
         .set('Authorization', `Bearer ${adminToken}`)
         .send(pastEventData);
-      
+
       const eventId = createPastEventResponse.body.eventId;
       const bookingData = createTestBooking({ event_id: eventId });
 
@@ -189,10 +189,10 @@ describe('Bookings API', () => {
     it('should not create duplicate booking for same user and event', async () => {
       const { token: adminToken } = await createAdminInDb();
       const { token: userToken } = await createUserInDb(createTestUser());
-      
+
       const eventData = createTestEvent();
       const event = await createEventInDb(eventData, adminToken);
-      
+
       const bookingData = createTestBooking({ event_id: event.id });
 
       // Create first booking
@@ -211,10 +211,10 @@ describe('Bookings API', () => {
       const { token: adminToken } = await createAdminInDb();
       const { token: user1Token } = await createUserInDb(createTestUser({ email: 'user1@example.com' }));
       const { token: user2Token } = await createUserInDb(createTestUser({ email: 'user2@example.com' }));
-      
+
       const eventData = createTestEvent({ capacity: 1 });
       const event = await createEventInDb(eventData, adminToken);
-      
+
       const bookingData = createTestBooking({ event_id: event.id });
 
       // Fill the event to capacity
@@ -224,7 +224,7 @@ describe('Bookings API', () => {
       const response = await request(getApp())
         .post('/api/bookings')
         .set('Authorization', `Bearer ${user2Token}`)
-        .send(createTestBooking({ 
+        .send(createTestBooking({
           event_id: event.id,
           attendee_email: 'different@example.com'
         }));
@@ -245,7 +245,7 @@ describe('Bookings API', () => {
 
     it('should validate field formats', async () => {
       const { token: userToken } = await createUserInDb(createTestUser());
-      
+
       const invalidData = {
         event_id: 'invalid', // should be integer
         attendee_name: '', // empty name
@@ -276,10 +276,10 @@ describe('Bookings API', () => {
     it('should cancel booking successfully', async () => {
       const { token: adminToken } = await createAdminInDb();
       const { token: userToken } = await createUserInDb(createTestUser());
-      
+
       const eventData = createTestEvent();
       const event = await createEventInDb(eventData, adminToken);
-      
+
       const bookingData = createTestBooking({ event_id: event.id });
       const booking = await createBookingInDb(bookingData, userToken);
 
@@ -294,7 +294,7 @@ describe('Bookings API', () => {
       const getResponse = await request(getApp())
         .get(`/api/bookings/${booking.id}`)
         .set('Authorization', `Bearer ${userToken}`);
-      
+
       expect(getResponse.body.status).toBe('cancelled');
     });
 
@@ -302,10 +302,10 @@ describe('Bookings API', () => {
       const { token: adminToken } = await createAdminInDb();
       const { token: user1Token } = await createUserInDb(createTestUser({ email: 'user1@example.com' }));
       const { token: user2Token } = await createUserInDb(createTestUser({ email: 'user2@example.com' }));
-      
+
       const eventData = createTestEvent();
       const event = await createEventInDb(eventData, adminToken);
-      
+
       const bookingData = createTestBooking({ event_id: event.id });
       const booking = await createBookingInDb(bookingData, user1Token);
 
@@ -319,10 +319,10 @@ describe('Bookings API', () => {
     it('should not cancel already cancelled booking', async () => {
       const { token: adminToken } = await createAdminInDb();
       const { token: userToken } = await createUserInDb(createTestUser());
-      
+
       const eventData = createTestEvent();
       const event = await createEventInDb(eventData, adminToken);
-      
+
       const bookingData = createTestBooking({ event_id: event.id });
       const booking = await createBookingInDb(bookingData, userToken);
 
@@ -354,10 +354,10 @@ describe('Bookings API', () => {
     it('should return event bookings for admin', async () => {
       const { token: adminToken } = await createAdminInDb();
       const { token: userToken } = await createUserInDb(createTestUser());
-      
+
       const eventData = createTestEvent();
       const event = await createEventInDb(eventData, adminToken);
-      
+
       const bookingData = createTestBooking({ event_id: event.id });
       await createBookingInDb(bookingData, userToken);
 
@@ -375,7 +375,7 @@ describe('Bookings API', () => {
     it('should not return event bookings for regular user', async () => {
       const { token: adminToken } = await createAdminInDb();
       const { token: userToken } = await createUserInDb(createTestUser());
-      
+
       const eventData = createTestEvent();
       const event = await createEventInDb(eventData, adminToken);
 
@@ -388,7 +388,7 @@ describe('Bookings API', () => {
 
     it('should return empty array for event with no bookings', async () => {
       const { token: adminToken } = await createAdminInDb();
-      
+
       const eventData = createTestEvent();
       const event = await createEventInDb(eventData, adminToken);
 
@@ -406,16 +406,16 @@ describe('Bookings API', () => {
       const { token: adminToken } = await createAdminInDb();
       const { token: user1Token } = await createUserInDb(createTestUser({ email: 'user1@example.com' }));
       const { token: user2Token } = await createUserInDb(createTestUser({ email: 'user2@example.com' }));
-      
+
       const eventData = createTestEvent({ capacity: 1 });
       const event = await createEventInDb(eventData, adminToken);
-      
-      const booking1Data = createTestBooking({ 
+
+      const booking1Data = createTestBooking({
         event_id: event.id,
         attendee_email: 'user1@example.com'
       });
-      
-      const booking2Data = createTestBooking({ 
+
+      const booking2Data = createTestBooking({
         event_id: event.id,
         attendee_email: 'user2@example.com'
       });

@@ -72,28 +72,28 @@ const sampleEvents: SampleEvent[] = [
 
 async function seedEvents(): Promise<void> {
   console.log('🌱 Starting to seed sample events...');
-  
+
   const db = database.getDb();
-  
-  // First, check if events already exist to avoid duplicates
+
+  // First, check if events already exist to avoid duplicate
   const checkExisting = new Promise<number>((resolve, reject) => {
     db.get('SELECT COUNT(*) as count FROM events', (err, row: any) => {
       if (err) reject(err);
       else resolve(row.count);
     });
   });
-  
+
   try {
     const existingCount = await checkExisting;
-    
+
     if (existingCount > 0) {
       console.log(`⚠️  Found ${existingCount} existing events. Skipping seeding to avoid duplicates.`);
       console.log('💡 If you want to re-seed, delete existing events first.');
       return;
     }
-    
+
     console.log('📅 Adding sample events to database...');
-    
+
     // Insert each event
     const insertPromises = sampleEvents.map((event) => {
       return new Promise<void>((resolve, reject) => {
@@ -101,7 +101,7 @@ async function seedEvents(): Promise<void> {
           INSERT INTO events (title, description, date, start_time, end_time, location, capacity, price, created_by)
           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
-        
+
         db.run(query, [
           event.title,
           event.description,
@@ -123,15 +123,15 @@ async function seedEvents(): Promise<void> {
         });
       });
     });
-    
+
     await Promise.all(insertPromises);
-    
+
     console.log(`🎉 Successfully seeded ${sampleEvents.length} sample events!`);
     console.log('\n📋 Event Summary:');
     sampleEvents.forEach((event, i) => {
       console.log(`  ${i + 1}. ${event.title} - ${event.date} at ${event.start_time}`);
     });
-    
+
   } catch (error) {
     console.error('💥 Error seeding events:', error);
     throw error;
@@ -139,7 +139,7 @@ async function seedEvents(): Promise<void> {
 }
 
 // Run the seeding if this file is executed directly
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   seedEvents()
     .then(() => {
       console.log('\n✨ Seeding completed successfully!');
